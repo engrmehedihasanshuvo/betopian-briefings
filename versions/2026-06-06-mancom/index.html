@@ -1,0 +1,2141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Betopian Presentation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --brand: #F79549;
+      --brand-glow: #E07A2B;
+      --brand-soft: rgba(247, 149, 73, 0.15);
+      --navy: #0B0F17;
+      --navy-card: #121826;
+      --navy-elevated: #1A2234;
+      --slate: #94A3B8;
+      --text: #E2E8F0;
+      --text-dim: #64748B;
+      --line: rgba(148, 163, 184, 0.12);
+      --cyan: #41BFB8;
+      --green: #58BC72;
+      --red: #EE2D46;
+      --ease: cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: "Inter", system-ui, sans-serif;
+      background: var(--navy);
+      color: var(--text);
+      overflow: hidden;
+      height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Ambient background */
+    .ambient {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.45;
+      animation: drift 18s ease-in-out infinite alternate;
+    }
+    .orb-1 { width: 520px; height: 520px; background: var(--brand); top: -120px; right: -80px; }
+    .orb-2 { width: 400px; height: 400px; background: var(--cyan); bottom: -100px; left: -60px; animation-delay: -6s; }
+    .orb-3 { width: 280px; height: 280px; background: #6366F1; top: 40%; left: 35%; opacity: 0.2; animation-delay: -12s; }
+    @keyframes drift {
+      from { transform: translate(0, 0) scale(1); }
+      to { transform: translate(30px, -20px) scale(1.08); }
+    }
+    .grid-bg {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+      background-size: 48px 48px;
+      mask-image: radial-gradient(ellipse 80% 70% at 50% 50%, black, transparent);
+    }
+
+    .deck {
+      position: relative;
+      z-index: 1;
+      width: 100vw;
+      height: 100vh;
+    }
+
+    .slide {
+      display: none;
+      position: absolute;
+      inset: 0;
+      padding: 44px 56px 88px;
+      opacity: 0;
+      transform: translateX(40px);
+      transition: opacity 0.55s var(--ease), transform 0.55s var(--ease);
+    }
+    .slide.active {
+      display: grid;
+      opacity: 1;
+      transform: translateX(0);
+    }
+    .slide.exit-left { transform: translateX(-40px); opacity: 0; }
+
+    .slide-title { grid-template-rows: 1fr auto; align-content: stretch; }
+    .slide-split { grid-template-columns: 1.05fr 0.92fr; gap: 44px; align-items: center; }
+    .slide-single { grid-template-rows: auto 1fr; gap: 28px; }
+
+    h1, h2, h3 { font-family: "Plus Jakarta Sans", sans-serif; }
+    h1 {
+      font-size: clamp(2.8rem, 5vw, 4.2rem);
+      font-weight: 800;
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      background: linear-gradient(135deg, #fff 0%, #FFD4B0 50%, var(--brand) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    h2 {
+      font-size: clamp(1.7rem, 3vw, 2.35rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: #fff;
+    }
+    h3 {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--brand);
+      margin-bottom: 14px;
+    }
+    .subtitle {
+      font-size: 1.08rem;
+      line-height: 1.65;
+      color: var(--slate);
+      max-width: 54ch;
+    }
+
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    .brand-mark {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+    }
+    .brand-mark img { height: 22px; width: auto; }
+    .slide-no {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-dim);
+      padding: 6px 12px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255,255,255,0.03);
+    }
+
+    .tagline {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 22px;
+      padding: 10px 18px;
+      border-radius: 999px;
+      background: var(--brand-soft);
+      border: 1px solid rgba(247, 149, 73, 0.35);
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: #FFD4B0;
+    }
+    .tagline::before {
+      content: "";
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--brand);
+      box-shadow: 0 0 12px var(--brand);
+      animation: pulse 2s ease infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.6; transform: scale(0.85); }
+    }
+
+    .content { display: flex; flex-direction: column; justify-content: center; gap: 18px; }
+
+    /* Stagger reveal */
+    .reveal > * {
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity 0.6s var(--ease), transform 0.6s var(--ease);
+    }
+    .slide.active .reveal > *:nth-child(1) { transition-delay: 0.05s; opacity: 1; transform: none; }
+    .slide.active .reveal > *:nth-child(2) { transition-delay: 0.12s; opacity: 1; transform: none; }
+    .slide.active .reveal > *:nth-child(3) { transition-delay: 0.19s; opacity: 1; transform: none; }
+    .slide.active .reveal > *:nth-child(4) { transition-delay: 0.26s; opacity: 1; transform: none; }
+    .slide.active .reveal > *:nth-child(5) { transition-delay: 0.33s; opacity: 1; transform: none; }
+    .slide.active .reveal > *:nth-child(6) { transition-delay: 0.4s; opacity: 1; transform: none; }
+
+    ul.points {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    ul.points li {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      font-size: 0.96rem;
+      line-height: 1.55;
+      color: #CBD5E1;
+      padding: 12px 14px;
+      border-radius: 12px;
+      background: rgba(255,255,255,0.02);
+      border: 1px solid var(--line);
+      transition: border-color 0.25s, background 0.25s;
+    }
+    ul.points li:hover {
+      border-color: rgba(247, 149, 73, 0.3);
+      background: rgba(247, 149, 73, 0.05);
+    }
+    ul.points li::before {
+      content: "";
+      flex-shrink: 0;
+      width: 6px; height: 6px;
+      margin-top: 9px;
+      border-radius: 50%;
+      background: var(--brand);
+      box-shadow: 0 0 8px var(--brand-glow);
+    }
+    ul.points li strong { color: #fff; }
+
+    .metric-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-top: 6px;
+    }
+    .metric {
+      padding: 20px 16px;
+      border-radius: 16px;
+      background: linear-gradient(145deg, var(--navy-elevated), var(--navy-card));
+      border: 1px solid var(--line);
+      position: relative;
+      overflow: hidden;
+    }
+    .metric::after {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--brand), transparent);
+      opacity: 0.6;
+    }
+    .metric .val {
+      font-family: "Plus Jakarta Sans", sans-serif;
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--brand);
+      line-height: 1;
+    }
+    .metric .lbl {
+      font-size: 0.74rem;
+      color: var(--text-dim);
+      margin-top: 8px;
+      line-height: 1.4;
+    }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+    .card {
+      padding: 16px 18px;
+      border-radius: 14px;
+      background: var(--navy-card);
+      border: 1px solid var(--line);
+      transition: transform 0.25s var(--ease), border-color 0.25s;
+      cursor: default;
+    }
+    .card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(247, 149, 73, 0.25);
+    }
+    .card strong {
+      display: block;
+      font-size: 0.88rem;
+      color: #fff;
+      margin-bottom: 5px;
+    }
+    .card span {
+      font-size: 0.8rem;
+      color: var(--slate);
+      line-height: 1.45;
+    }
+
+    /* Phone mockup */
+    .phone-wrap {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      perspective: 1200px;
+    }
+    .phone {
+      width: 260px;
+      height: 520px;
+      border-radius: 36px;
+      padding: 10px;
+      background: linear-gradient(160deg, #2a3142 0%, #111827 100%);
+      box-shadow:
+        0 40px 80px rgba(0,0,0,0.55),
+        0 0 0 1px rgba(255,255,255,0.08),
+        inset 0 1px 0 rgba(255,255,255,0.12);
+      position: relative;
+      transform: rotateY(-6deg) rotateX(2deg);
+      transition: transform 0.6s var(--ease);
+    }
+    .slide.active .phone { transform: rotateY(0deg) rotateX(0deg); }
+    .phone-notch {
+      position: absolute;
+      top: 14px; left: 50%;
+      transform: translateX(-50%);
+      width: 90px; height: 24px;
+      background: #0a0f18;
+      border-radius: 0 0 14px 14px;
+      z-index: 5;
+    }
+    .phone-screen {
+      width: 100%;
+      height: 100%;
+      border-radius: 28px;
+      overflow: hidden;
+      background: #F7F8FA;
+      position: relative;
+    }
+    .phone-screen img.screenshot {
+      width: 100%;
+      height: 100%;
+      object-fit: fill;
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+    }
+    .phone-screen.has-shot .ui-preview { display: none; }
+
+    /* CSS UI previews */
+    .ui-preview { height: 100%; display: flex; flex-direction: column; font-size: 9px; }
+    .ui-header {
+      padding: 36px 14px 10px;
+      background: linear-gradient(135deg, var(--brand) 0%, var(--brand-glow) 100%);
+      color: white;
+    }
+    .ui-header h4 { font-size: 13px; font-weight: 700; }
+    .ui-header p { opacity: 0.85; margin-top: 2px; font-size: 8px; }
+    .ui-punch {
+      margin: 10px 12px;
+      padding: 12px;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    }
+    .ui-punch .row { display: flex; justify-content: space-between; align-items: center; }
+    .ui-punch .btn {
+      margin-top: 8px;
+      background: var(--green);
+      color: white;
+      text-align: center;
+      padding: 8px;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 9px;
+    }
+    .ui-modules {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
+      padding: 0 12px 8px;
+    }
+    .ui-mod {
+      aspect-ratio: 1;
+      background: white;
+      border-radius: 10px;
+      display: grid;
+      place-items: center;
+      font-size: 14px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+    }
+    .ui-nav {
+      margin-top: auto;
+      display: flex;
+      justify-content: space-around;
+      padding: 10px 4px 14px;
+      background: white;
+      border-top: 1px solid #E2E8F0;
+    }
+    .ui-nav span {
+      font-size: 7px;
+      color: #94A3B8;
+      text-align: center;
+    }
+    .ui-nav span.on { color: var(--brand-glow); font-weight: 700; }
+
+    /* Feed preview */
+    .ui-feed-header {
+      padding: 36px 14px 10px;
+      background: white;
+      border-bottom: 1px solid #E2E8F0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .ui-feed-header strong { font-size: 12px; color: #1A2332; }
+    .ui-post {
+      margin: 8px 10px;
+      background: white;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+    .ui-post .ph {
+      height: 90px;
+      background: linear-gradient(135deg, #FFD4B0, var(--brand));
+    }
+    .ui-post .meta { padding: 8px 10px; }
+    .ui-reactions {
+      display: flex;
+      gap: 6px;
+      padding: 6px 10px 10px;
+    }
+    .ui-reactions span {
+      width: 22px; height: 22px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      font-size: 9px;
+      font-weight: 800;
+      color: white;
+      animation: bounce 2s ease infinite;
+    }
+    .ui-reactions span:nth-child(1) { background: #E73B52; }
+    .ui-reactions span:nth-child(2) { background: #F59E0B; }
+    .ui-reactions span:nth-child(3) { background: #EF4444; }
+    .ui-reactions span:nth-child(2) { animation-delay: 0.2s; }
+    .ui-reactions span:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-4px); }
+    }
+
+    /* Mail preview */
+    .ui-mail-item {
+      display: flex;
+      gap: 8px;
+      padding: 10px 12px;
+      border-bottom: 1px solid #F1F5F9;
+      background: white;
+    }
+    .ui-avatar {
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #6366F1, #8B5CF6);
+      flex-shrink: 0;
+    }
+    .ui-mail-item.unread { background: #FFF7EE; }
+
+    /* Login preview */
+    .ui-login {
+      height: 100%;
+      background: linear-gradient(180deg, var(--brand) 0%, #fff 45%);
+      padding: 40px 16px 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .ui-login img { width: 56px; margin-bottom: 12px; }
+    .ui-login .field {
+      width: 100%;
+      background: white;
+      border: 1px solid #E2E8F0;
+      border-radius: 10px;
+      padding: 10px 12px;
+      margin-bottom: 8px;
+      color: #94A3B8;
+      font-size: 9px;
+    }
+    .ui-login .submit {
+      width: 100%;
+      background: var(--brand-glow);
+      color: white;
+      text-align: center;
+      padding: 11px;
+      border-radius: 10px;
+      font-weight: 700;
+      margin-top: 4px;
+    }
+
+    /* Shot frame — fixed mobile width (matches .phone mockup ratio, scaled down) */
+    .shot-dual {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      height: 100%;
+    }
+    .shot-quad {
+      display: grid;
+      grid-template-columns: auto auto;
+      grid-template-rows: auto auto;
+      gap: 12px;
+      height: 100%;
+      align-content: center;
+      justify-content: center;
+    }
+    .shot-slot {
+      flex: 0 0 auto;
+      width: auto;
+      height: auto;
+      border-radius: 18px;
+      border: 1px dashed rgba(148, 163, 184, 0.25);
+      background: rgba(255,255,255,0.02);
+      position: relative;
+      overflow: visible;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 8px;
+    }
+    .shot-slot.has-shot {
+      border: none;
+      background: transparent;
+      padding: 0;
+    }
+    .shot-slot img {
+      position: relative;
+      display: block;
+      width: 148px;
+      height: auto;
+      aspect-ratio: 9 / 19.5;
+      object-fit: fill;
+      border-radius: 18px;
+      box-shadow:
+        0 12px 40px rgba(0, 0, 0, 0.45),
+        0 0 0 2px rgba(255, 255, 255, 0.06);
+    }
+    .shot-quad .shot-slot img {
+      width: 128px;
+      border-radius: 14px;
+    }
+    .shot-slot.has-shot .shot-label-box { display: none; }
+    .shot-label-box {
+      text-align: center;
+      padding: 16px;
+    }
+    .shot-label-box .num {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      color: var(--brand);
+      text-transform: uppercase;
+    }
+    .shot-label-box .hint {
+      font-size: 0.78rem;
+      color: var(--text-dim);
+      margin-top: 6px;
+      line-height: 1.4;
+    }
+    .shot-label-box code {
+      display: inline-block;
+      margin-top: 6px;
+      padding: 3px 8px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 6px;
+      font-size: 0.7rem;
+      color: var(--slate);
+    }
+
+    /* Interactive tabs */
+    .tabs-interactive {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin: 16px 0;
+    }
+    .tab-btn {
+      padding: 10px 16px;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      background: var(--navy-card);
+      color: var(--slate);
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.25s var(--ease);
+      font-family: inherit;
+    }
+    .tab-btn:hover { border-color: rgba(247,149,73,0.4); color: #fff; }
+    .tab-btn.active {
+      background: linear-gradient(135deg, var(--brand), var(--brand-glow));
+      border-color: transparent;
+      color: white;
+      box-shadow: 0 8px 24px rgba(224, 122, 43, 0.35);
+    }
+
+    /* Before/After toggle */
+    .toggle-wrap {
+      display: flex;
+      gap: 0;
+      margin-bottom: 18px;
+      background: var(--navy-card);
+      border-radius: 12px;
+      padding: 4px;
+      border: 1px solid var(--line);
+      width: fit-content;
+    }
+    .toggle-btn {
+      padding: 8px 20px;
+      border: none;
+      background: transparent;
+      color: var(--slate);
+      font-size: 0.82rem;
+      font-weight: 600;
+      border-radius: 9px;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.25s;
+    }
+    .toggle-btn.active {
+      background: var(--brand);
+      color: white;
+    }
+    .panel-before, .panel-after { display: none; }
+    .panel-before.show, .panel-after.show { display: block; }
+
+    /* Architecture */
+    .arch-flow {
+      display: flex;
+      align-items: stretch;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .arch-node {
+      flex: 1;
+      min-width: 120px;
+      padding: 16px;
+      border-radius: 14px;
+      background: var(--navy-card);
+      border: 1px solid var(--line);
+      text-align: center;
+      font-size: 0.78rem;
+      line-height: 1.45;
+      color: var(--slate);
+      transition: transform 0.3s;
+    }
+    .arch-node:hover { transform: scale(1.03); border-color: rgba(65,191,184,0.4); }
+    .arch-node strong { display: block; color: #fff; margin-bottom: 4px; font-size: 0.85rem; }
+    .arch-arrow {
+      display: flex;
+      align-items: center;
+      color: var(--brand);
+      font-size: 1.4rem;
+      font-weight: 700;
+    }
+
+    .speaker-note {
+      font-size: 0.76rem;
+      color: var(--text-dim);
+      border-left: 3px solid var(--brand);
+      padding: 10px 14px;
+      background: rgba(247,149,73,0.06);
+      border-radius: 0 10px 10px 0;
+      margin-top: 12px;
+      line-height: 1.5;
+    }
+
+    /* Title slide extras */
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 40px;
+      align-items: end;
+    }
+    .presenter-card {
+      padding: 20px 24px;
+      border-radius: 18px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--line);
+      backdrop-filter: blur(12px);
+      min-width: 280px;
+    }
+    .presenter-card .name {
+      font-family: "Plus Jakarta Sans", sans-serif;
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: #fff;
+      line-height: 1.3;
+    }
+    .presenter-card .designation {
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: #FFD4B0;
+      margin-top: 6px;
+      letter-spacing: 0.02em;
+    }
+    .presenter-card .presenter-date {
+      display: inline-block;
+      margin-top: 14px;
+      padding: 6px 12px;
+      border-radius: 8px;
+      background: rgba(247, 149, 73, 0.12);
+      border: 1px solid rgba(247, 149, 73, 0.28);
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--brand);
+    }
+    .presenter-card .role {
+      font-size: 0.82rem;
+      color: var(--slate);
+      margin-top: 12px;
+    }
+    .presenter-card .meta-line {
+      font-size: 0.78rem;
+      color: var(--text-dim);
+      margin-top: 14px;
+      padding-top: 14px;
+      border-top: 1px solid var(--line);
+      line-height: 1.75;
+    }
+    .presenter-card .contact {
+      color: #CBD5E1;
+      font-weight: 600;
+    }
+    .date-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 14px;
+      padding: 8px 14px;
+      border-radius: 10px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--line);
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #CBD5E1;
+    }
+    .date-chip strong { color: var(--brand); font-weight: 700; }
+    .logo-hero {
+      width: 100px;
+      height: 100px;
+      border-radius: 24px;
+      object-fit: contain;
+      background: rgba(255,255,255,0.08);
+      padding: 12px;
+      border: 1px solid rgba(255,255,255,0.12);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+    }
+    .phone-hero {
+      position: relative;
+    }
+    .phone-hero .phone {
+      width: 220px;
+      height: 440px;
+    }
+
+    /* Closing */
+    .ask-list li {
+      background: rgba(255,255,255,0.04);
+      border-color: rgba(255,255,255,0.08);
+    }
+    .thank-you {
+      font-family: "Plus Jakarta Sans", sans-serif;
+      font-size: 2rem;
+      font-weight: 800;
+      background: linear-gradient(90deg, #FFD4B0, var(--brand));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-top: 28px;
+    }
+    .qr-closing {
+      width: 120px;
+      border-radius: 14px;
+      background: white;
+      padding: 8px;
+    }
+
+    /* UI Chrome */
+    .progress-track {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      height: 3px;
+      background: rgba(255,255,255,0.06);
+      z-index: 200;
+    }
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--brand), var(--cyan));
+      box-shadow: 0 0 12px var(--brand);
+      transition: width 0.45s var(--ease);
+    }
+
+    .nav-dots {
+      position: fixed;
+      bottom: 22px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 8px;
+      z-index: 200;
+      padding: 8px 14px;
+      background: rgba(11, 15, 23, 0.85);
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      backdrop-filter: blur(10px);
+    }
+    .dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.2);
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      transition: all 0.3s;
+    }
+    .dot.active {
+      width: 28px;
+      border-radius: 4px;
+      background: var(--brand);
+    }
+    .dot:hover { background: rgba(247,149,73,0.6); }
+
+    .controls {
+      display: none !important;
+    }
+    .controls button, .controls .hint-key {
+      background: rgba(18, 24, 38, 0.9);
+      color: var(--slate);
+      border: 1px solid var(--line);
+      padding: 9px 14px;
+      border-radius: 10px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      backdrop-filter: blur(8px);
+      transition: all 0.2s;
+    }
+    .controls button:hover {
+      color: #fff;
+      border-color: rgba(247,149,73,0.4);
+      background: rgba(247,149,73,0.12);
+    }
+    .hint-key { cursor: default; pointer-events: none; }
+
+    .notes-panel {
+      position: fixed;
+      bottom: 56px;
+      left: 24px;
+      right: 24px;
+      max-width: 640px;
+      padding: 16px 20px;
+      background: rgba(18, 24, 38, 0.95);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      backdrop-filter: blur(12px);
+      z-index: 199;
+      transform: translateY(120%);
+      opacity: 0;
+      transition: all 0.4s var(--ease);
+      font-size: 0.84rem;
+      line-height: 1.55;
+      color: var(--slate);
+    }
+    .notes-panel.open {
+      transform: translateY(0);
+      opacity: 1;
+    }
+    .notes-panel strong {
+      color: var(--brand);
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    .overview-grid {
+      position: fixed;
+      inset: 0;
+      z-index: 300;
+      background: rgba(11, 15, 23, 0.92);
+      backdrop-filter: blur(8px);
+      display: none;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 16px;
+      padding: 60px 40px;
+      align-content: start;
+    }
+    .overview-grid.open { display: grid; grid-template-columns: repeat(7, 1fr); }
+    .overview-item {
+      aspect-ratio: 16/10;
+      border-radius: 12px;
+      border: 2px solid var(--line);
+      background: var(--navy-card);
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 12px;
+      transition: all 0.25s;
+    }
+    .overview-item:hover {
+      border-color: var(--brand);
+      transform: scale(1.04);
+    }
+    .overview-item.current { border-color: var(--brand); box-shadow: 0 0 20px rgba(247,149,73,0.3); }
+    .overview-item span { font-size: 0.75rem; font-weight: 600; color: var(--slate); }
+
+    /* Completion & roadmap */
+    .completion-hero {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      margin-top: 18px;
+    }
+    .ring {
+      width: 110px; height: 110px;
+      border-radius: 50%;
+      background: conic-gradient(var(--brand) 0deg, var(--brand) calc(var(--pct) * 3.6deg), rgba(255,255,255,0.08) calc(var(--pct) * 3.6deg));
+      display: grid;
+      place-items: center;
+      position: relative;
+      flex-shrink: 0;
+    }
+    .ring::after {
+      content: "";
+      width: 82px; height: 82px;
+      border-radius: 50%;
+      background: var(--navy-card);
+      position: absolute;
+    }
+    .ring span {
+      position: relative;
+      z-index: 1;
+      font-family: "Plus Jakarta Sans", sans-serif;
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--brand);
+    }
+    .progress-list { display: flex; flex-direction: column; gap: 10px; flex: 1; }
+    .prog-item { display: grid; grid-template-columns: 140px 1fr 42px; gap: 10px; align-items: center; font-size: 0.78rem; }
+    .prog-item label { color: var(--slate); }
+    .prog-bar {
+      height: 8px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.06);
+      overflow: hidden;
+    }
+    .prog-fill {
+      height: 100%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--brand), var(--cyan));
+      width: 0;
+      transition: width 1.2s var(--ease);
+    }
+    .slide.active .prog-fill { width: var(--w); }
+    .prog-pct { color: var(--brand); font-weight: 700; text-align: right; }
+
+    .module-groups {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 10px;
+    }
+    .module-group {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 10px 12px;
+      background: rgba(255,255,255,0.02);
+    }
+    .module-group-head {
+      font-family: "Plus Jakarta Sans", sans-serif;
+      font-size: 0.68rem;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--brand);
+      margin-bottom: 8px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid var(--line);
+    }
+    .module-group .chips {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+    .mod-chip {
+      padding: 7px 10px;
+      border-radius: 8px;
+      background: var(--navy-card);
+      border: 1px solid var(--line);
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: #CBD5E1;
+      transition: all 0.25s;
+      cursor: default;
+    }
+    .mod-chip:hover { border-color: rgba(247,149,73,0.35); }
+    .mod-chip .cat {
+      display: none;
+    }
+    .mod-chip.done { border-left: 3px solid var(--green); }
+    .mod-chip.wip { border-left: 3px solid var(--brand); }
+    .mod-chip.static { border-left: 3px solid #94A3B8; opacity: 0.92; }
+    .mod-chip.beta { border-left: 3px solid var(--cyan); background: rgba(65, 191, 184, 0.08); }
+    .mod-chip.plan { border-left: 3px solid #6366F1; opacity: 0.85; }
+
+    .status-legend {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
+      font-size: 0.72rem;
+      color: var(--text-dim);
+    }
+    .status-legend span::before {
+      content: "";
+      display: inline-block;
+      width: 8px; height: 8px;
+      border-radius: 2px;
+      margin-right: 6px;
+      vertical-align: middle;
+    }
+    .status-legend .s-done::before { background: var(--green); }
+    .status-legend .s-wip::before { background: var(--brand); }
+    .status-legend .s-static::before { background: #94A3B8; }
+    .status-legend .s-beta::before { background: var(--cyan); }
+    .status-legend .s-plan::before { background: #6366F1; }
+
+    .close-completion {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      margin-top: 16px;
+      padding: 16px 20px;
+      border-radius: 14px;
+      background: rgba(247, 149, 73, 0.1);
+      border: 1px solid rgba(247, 149, 73, 0.3);
+    }
+    .close-completion .pct {
+      font-family: "Plus Jakarta Sans", sans-serif;
+      font-size: 2.4rem;
+      font-weight: 800;
+      color: var(--brand);
+      line-height: 1;
+    }
+    .close-completion .detail {
+      font-size: 0.82rem;
+      color: var(--slate);
+      line-height: 1.55;
+    }
+    .close-completion .detail strong { color: #fff; }
+    .testflight-link {
+      display: inline-block;
+      margin-top: 6px;
+      padding: 6px 10px;
+      border-radius: 8px;
+      background: rgba(65, 191, 184, 0.15);
+      border: 1px solid rgba(65, 191, 184, 0.35);
+      color: var(--cyan);
+      font-size: 0.72rem;
+      font-weight: 600;
+      text-decoration: none;
+    }
+    .testflight-link:hover { background: rgba(65, 191, 184, 0.25); }
+
+    .sec-columns {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-top: 14px;
+    }
+    .sec-box {
+      border-radius: 14px;
+      padding: 14px 16px;
+      border: 1px solid var(--line);
+      background: var(--navy-card);
+    }
+    .sec-box.now { border-top: 3px solid var(--green); }
+    .sec-box.future { border-top: 3px solid var(--cyan); }
+    .sec-box h4 {
+      font-family: "Plus Jakarta Sans", sans-serif;
+      font-size: 0.78rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 10px;
+    }
+    .sec-box.now h4 { color: var(--green); }
+    .sec-box.future h4 { color: var(--cyan); }
+    .sec-box ul {
+      list-style: none;
+      font-size: 0.76rem;
+      color: var(--slate);
+      line-height: 1.55;
+    }
+    .sec-box li { margin-bottom: 7px; padding-left: 12px; position: relative; }
+    .sec-box li::before {
+      content: "";
+      position: absolute;
+      left: 0; top: 7px;
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: currentColor;
+      opacity: 0.7;
+    }
+    .sec-box.now li::before { color: var(--green); }
+    .sec-box.future li::before { color: var(--cyan); }
+
+    .value-highlight {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+    .value-highlight .metric { padding: 14px 12px; }
+    .value-highlight .metric .val { font-size: 1.35rem; }
+    .value-target {
+      font-size: 0.68rem;
+      color: var(--cyan);
+      margin-top: 4px;
+      font-weight: 600;
+    }
+
+    .ui-badge {
+      display: inline-block;
+      margin-top: 6px;
+      padding: 2px 7px;
+      border-radius: 6px;
+      font-size: 0.62rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      background: rgba(148, 163, 184, 0.15);
+      color: #94A3B8;
+      border: 1px solid rgba(148, 163, 184, 0.3);
+    }
+    .card.has-static { border-color: rgba(148, 163, 184, 0.25); }
+
+    /* SSO Hub */
+    .hub-wrap {
+      display: grid;
+      place-items: center;
+      min-height: 380px;
+      position: relative;
+    }
+    .hub-center {
+      width: 150px; height: 150px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--brand), var(--brand-glow));
+      display: grid;
+      place-items: center;
+      text-align: center;
+      font-family: "Plus Jakarta Sans", sans-serif;
+      font-weight: 800;
+      font-size: 0.85rem;
+      color: white;
+      box-shadow: 0 0 40px rgba(247,149,73,0.45);
+      z-index: 2;
+      animation: hubPulse 3s ease infinite;
+    }
+    @keyframes hubPulse {
+      0%, 100% { box-shadow: 0 0 40px rgba(247,149,73,0.45); }
+      50% { box-shadow: 0 0 60px rgba(247,149,73,0.65); }
+    }
+    .hub-node {
+      position: absolute;
+      width: 120px;
+      padding: 12px 10px;
+      border-radius: 14px;
+      background: var(--navy-card);
+      border: 1px solid var(--line);
+      text-align: center;
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--slate);
+      cursor: pointer;
+      transition: all 0.3s var(--ease);
+    }
+    .hub-node strong { display: block; color: #fff; font-size: 0.78rem; margin-bottom: 3px; }
+    .hub-node:hover, .hub-node.active {
+      border-color: var(--brand);
+      background: rgba(247,149,73,0.1);
+      transform: scale(1.06);
+      color: #fff;
+    }
+    .hub-node.n1 { top: 8%; left: 50%; transform: translateX(-50%); }
+    .hub-node.n2 { top: 28%; right: 2%; }
+    .hub-node.n3 { bottom: 28%; right: 2%; }
+    .hub-node.n4 { bottom: 8%; left: 50%; transform: translateX(-50%); }
+    .hub-node.n5 { bottom: 28%; left: 2%; }
+    .hub-node.n6 { top: 28%; left: 2%; }
+    .hub-node.n7 { top: 50%; right: -2%; transform: translateY(-50%); }
+    .hub-detail {
+      margin-top: 14px;
+      padding: 14px 16px;
+      border-radius: 12px;
+      background: rgba(247,149,73,0.08);
+      border: 1px solid rgba(247,149,73,0.25);
+      font-size: 0.82rem;
+      color: var(--slate);
+      line-height: 1.5;
+      min-height: 52px;
+    }
+
+    .roadmap {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-top: 12px;
+    }
+    .road-phase {
+      padding: 16px;
+      border-radius: 14px;
+      background: var(--navy-card);
+      border: 1px solid var(--line);
+      border-top: 3px solid var(--brand);
+    }
+    .road-phase.q2 { border-top-color: var(--cyan); }
+    .road-phase.q3 { border-top-color: #6366F1; }
+    .road-phase.q4 { border-top-color: var(--green); }
+    .road-phase h4 {
+      font-family: "Plus Jakarta Sans", sans-serif;
+      font-size: 0.82rem;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 10px;
+    }
+    .road-phase ul {
+      list-style: none;
+      font-size: 0.76rem;
+      color: var(--slate);
+      line-height: 1.55;
+    }
+    .road-phase li { margin-bottom: 6px; padding-left: 12px; position: relative; }
+    .road-phase li::before {
+      content: "";
+      position: absolute;
+      left: 0; top: 7px;
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--brand);
+    }
+
+    .title-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 16px;
+      padding: 10px 18px;
+      border-radius: 14px;
+      background: rgba(88, 188, 114, 0.12);
+      border: 1px solid rgba(88, 188, 114, 0.35);
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: #86EFAC;
+    }
+    .title-badge .pct-big {
+      font-family: "Plus Jakarta Sans", sans-serif;
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: var(--green);
+    }
+
+    @media print {
+      body { overflow: visible; }
+      .ambient, .controls, .nav-dots, .progress-track, .notes-panel, .overview-grid { display: none !important; }
+      .slide {
+        display: grid !important;
+        position: relative;
+        opacity: 1 !important;
+        transform: none !important;
+        page-break-after: always;
+        min-height: 100vh;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="ambient">
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+  <div class="grid-bg"></div>
+</div>
+
+<div class="deck" id="deck">
+
+  <!-- SLIDE 1 -->
+  <section class="slide slide-title active" data-slide="1" data-note="Open with confidence. Betopian is not just an app. It is the digital front door for every Betopia associate. Mention 5,000+ workforce scale.">
+    <div class="content reveal">
+      <div class="date-chip"><strong>6 June 2026</strong> · Saturday · Management Committee Briefing</div>
+      <div class="brand-mark">
+        <img src="assets/betopia_logo.png" alt="Betopia" />
+        Betopia Group · Confidential
+      </div>
+      <h1 style="margin-top: 16px;">Betopian</h1>
+      <p class="subtitle" style="margin-top: 14px; font-size: 1.2rem; color: #CBD5E1;">
+        The unified mobile platform for every Betopia associate. HR, engagement, communication, and intelligence in one secure app.
+      </p>
+      <span class="tagline">Mobile Workforce Platform Briefing</span>
+      <div class="title-badge">
+        <span class="pct-big">74%</span>
+        <span>Android v1.0.0 + iOS TestFlight beta · 29 modules live · 8 static UI pending</span>
+      </div>
+    </div>
+    <div class="hero-grid">
+      <div class="phone-hero">
+        <div class="phone">
+          <div class="phone-notch"></div>
+          <div class="phone-screen" id="title-phone">
+            <img src="assets/launcher_icon.png" alt="Betopian App" class="screenshot" style="object-fit: contain; padding: 60px 30px; background: linear-gradient(180deg, #1A2332, #0B0F17);" onload="this.parentElement.classList.add('has-shot')" />
+          </div>
+        </div>
+      </div>
+      <div class="presenter-card reveal">
+        <div class="name">Mehedi Hasan Shuvo</div>
+        <div class="designation">Software Engineer</div>
+        <div class="presenter-date">6 June 2026</div>
+        <div class="role">Presenter · Betopia Group Mobile Platform</div>
+        <div class="meta-line">
+          Audience: Management Committee<br />
+          <span class="contact">01303129515</span><br />
+          App v1.0.0 · Android + iOS TestFlight
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 2 -->
+  <section class="slide slide-split" data-slide="2" data-note="Hit the four pillars quickly. The metrics animate on entry. Pause so the room can read them. Emphasise one app replaces fragmented tools.">
+    <div class="reveal">
+      <div class="top-bar">
+        <div class="brand-mark"><img src="assets/betopia_logo.png" alt="" /> Betopian</div>
+        <div class="slide-no">02 / 14</div>
+      </div>
+      <h2>Executive Summary</h2>
+      <p class="subtitle" style="margin-top: 10px;">
+        A single front door for ~5,000+ associates, replacing fragmented tools with one governed, branded experience.
+      </p>
+      <ul class="points" style="margin-top: 20px;">
+        <li><strong>One app, complete workflow</strong>: attendance, leave, pay slip, benefits, and ERP actions without leaving mobile.</li>
+        <li><strong>Culture &amp; engagement</strong>: internal social feed with posts, reels, reactions, and saved content.</li>
+        <li><strong>Corporate communication</strong>: IMAP mail, ERP notifications, announcements, and AI assistants.</li>
+        <li><strong>Enterprise-grade control</strong>: ERP-authenticated sessions, location guard, version enforcement.</li>
+      </ul>
+      <div class="metric-row">
+        <div class="metric"><div class="val" data-count="5">0</div><div class="lbl">Core navigation pillars</div></div>
+        <div class="metric"><div class="val" data-count="29">0</div><div class="lbl">Live modules in app</div></div>
+        <div class="metric"><div class="val" data-count="2">0</div><div class="lbl">Languages (EN + BN)</div></div>
+      </div>
+    </div>
+    <div class="phone-wrap reveal">
+      <div class="phone">
+        <div class="phone-notch"></div>
+        <div class="phone-screen" id="shot-home">
+          <img src="" alt="" class="screenshot" data-src="assets/1.jpeg" onload="onShotLoad(this)" onerror="this.remove()" />
+          <div class="ui-preview">
+            <div class="ui-header">
+              <h4>Good Morning</h4>
+              <p>Betopia Associate</p>
+            </div>
+            <div class="ui-punch">
+              <div class="row"><span>Today's Punch</span><strong style="color:var(--green)">On Time</strong></div>
+              <div class="btn">Check In</div>
+            </div>
+            <div class="ui-modules">
+              <div class="ui-mod" style="color:var(--brand-glow);font-size:8px;font-weight:700">HR</div>
+              <div class="ui-mod" style="color:#6366F1;font-size:8px;font-weight:700">LV</div>
+              <div class="ui-mod" style="color:var(--green);font-size:8px;font-weight:700">$</div>
+              <div class="ui-mod" style="color:#8B5CF6;font-size:8px;font-weight:700">DIR</div>
+              <div class="ui-mod" style="color:var(--red);font-size:8px;font-weight:700">NEWS</div>
+              <div class="ui-mod" style="color:var(--cyan);font-size:8px;font-weight:700">AI</div>
+              <div class="ui-mod" style="color:#F59E0B;font-size:8px;font-weight:700">GPS</div>
+              <div class="ui-mod" style="color:#94A3B8;font-size:8px;font-weight:700">+</div>
+            </div>
+            <div class="ui-nav">
+              <span class="on">Home</span><span>Feed</span><span>Mail</span><span>Alert</span><span>More</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 3 -->
+  <section class="slide slide-single" data-slide="3" data-note="Click Before/After toggle live during presentation. Before = pain points. After = Betopian value. This slide builds the 'why now' narrative.">
+    <div>
+      <div class="top-bar">
+        <div class="brand-mark"><img src="assets/betopia_logo.png" alt="" /> Betopian</div>
+        <div class="slide-no">03 / 14</div>
+      </div>
+      <h2>Why We Built This</h2>
+    </div>
+    <div class="slide-split" style="display:grid;">
+      <div class="reveal">
+        <div class="toggle-wrap">
+          <button class="toggle-btn active" data-panel="before">Before</button>
+          <button class="toggle-btn" data-panel="after">After: Betopian</button>
+        </div>
+        <div class="panel-before show">
+          <ul class="points">
+            <li>HR requests handled manually or via disconnected ERP web access</li>
+            <li>Engagement scattered across personal messaging and public social platforms</li>
+            <li>Mail, policies, and support accessed through multiple apps and portals</li>
+            <li>Limited visibility into adoption, compliance, and employee wellbeing</li>
+          </ul>
+        </div>
+        <div class="panel-after">
+          <ul class="points">
+            <li>Self-service HR tied directly to Odoo ERP (Business Brain)</li>
+            <li>Governed internal social platform on company infrastructure</li>
+            <li>Mail + AI + notifications unified under one login experience</li>
+            <li>Measurable engagement, audit trail, and remote configuration</li>
+          </ul>
+        </div>
+      </div>
+      <div class="phone-wrap reveal">
+        <div class="phone">
+          <div class="phone-notch"></div>
+          <div class="phone-screen">
+            <img src="" alt="" class="screenshot" data-src="assets/4.jpeg" onload="onShotLoad(this)" onerror="this.remove()" />
+            <div class="ui-preview" style="background:#1A2332; color:white; align-items:center; justify-content:center; text-align:center; padding:40px 20px;">
+              <img src="assets/betopia_logo.png" alt="" style="width:80px; margin-bottom:16px; opacity:0.9;" />
+              <div style="font-size:11px; font-weight:700; color:#FFD4B0;">One Platform</div>
+              <div style="font-size:9px; color:#94A3B8; margin-top:8px; line-height:1.5;">ERP + Social + Mail + AI<br/>unified under Betopian</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 4 -->
+  <section class="slide slide-split" data-slide="4" data-note="INTERACTIVE: Click each tab pill: phone preview changes live. Say associates learn ONE navigation pattern, not twenty apps.">
+    <div class="reveal">
+      <div class="top-bar">
+        <div class="brand-mark"><img src="assets/betopia_logo.png" alt="" /> Betopian</div>
+        <div class="slide-no">04 / 14</div>
+      </div>
+      <h2>Platform at a Glance</h2>
+      <p class="subtitle" style="margin-top: 8px;">Five-tab architecture designed for daily employee habits. <em style="color:var(--brand)">Click tabs →</em></p>
+      <div class="tabs-interactive" id="platform-tabs">
+        <button class="tab-btn active" data-tab="home">Home</button>
+        <button class="tab-btn" data-tab="feed">Feed</button>
+        <button class="tab-btn" data-tab="mail">Mail</button>
+        <button class="tab-btn" data-tab="notif">Notifications</button>
+        <button class="tab-btn" data-tab="more">More</button>
+      </div>
+      <div class="card-grid" id="tab-desc">
+        <div class="card"><strong>Home</strong><span>Dashboard, punch status, HRMS hub, virtual card, module launcher</span></div>
+        <div class="card"><strong>Feed</strong><span>Posts, reels, reactions, save (live). Groups &amp; chat: static UI only</span></div>
+        <div class="card"><strong>Mail</strong><span>Corporate IMAP inbox with unread badge</span></div>
+        <div class="card"><strong>Notifications</strong><span>ERP + Social + custom alert streams</span></div>
+      </div>
+      <p class="speaker-note">Tip: click tab buttons and the phone preview updates in real time.</p>
+    </div>
+    <div class="phone-wrap reveal">
+      <div class="phone">
+        <div class="phone-notch"></div>
+        <div class="phone-screen" id="tab-phone">
+          <!-- Dynamic content via JS -->
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 5: MODULE ECOSYSTEM -->
+  <section class="slide slide-single" data-slide="5" data-note="Green = live/working. Grey = static UI only. Purple = upcoming. Cyan = iOS TestFlight beta. 29 live, 8 static UI, 1 upcoming, 1 iOS beta. 39 scoped modules, 74% platform complete.">
+    <div>
+      <div class="top-bar">
+        <div class="brand-mark"><img src="assets/betopia_logo.png" alt="" /> Betopian</div>
+        <div class="slide-no">05 / 14</div>
+      </div>
+      <h2>Complete Module Ecosystem</h2>
+      <p class="subtitle" style="margin-top: 6px;">Full product map with honest delivery status as of v1.0.0.</p>
+    </div>
+    <div class="reveal">
+      <div class="status-legend">
+        <span class="s-done">Live (working)</span>
+        <span class="s-static">Static UI only</span>
+        <span class="s-plan">Upcoming</span>
+        <span class="s-beta">Beta (TestFlight)</span>
+      </div>
+      <div class="module-groups">
+        <div class="module-group">
+          <div class="module-group-head">AI</div>
+          <div class="chips">
+            <div class="mod-chip done">HR Chatbot</div>
+            <div class="mod-chip done">Policy Talk (RAG)</div>
+            <div class="mod-chip done">Takora AI</div>
+          </div>
+        </div>
+        <div class="module-group">
+          <div class="module-group-head">Comms</div>
+          <div class="chips">
+            <div class="mod-chip done">Announcements</div>
+            <div class="mod-chip done">Corporate Mail (IMAP)</div>
+            <div class="mod-chip done">ERP Notifications</div>
+            <div class="mod-chip done">MOM (Minutes of Meeting)</div>
+            <div class="mod-chip plan">Online Meet</div>
+          </div>
+        </div>
+        <div class="module-group">
+          <div class="module-group-head">Culture</div>
+          <div class="chips">
+            <div class="mod-chip done">Betopia Daily</div>
+            <div class="mod-chip done">Photo Frame</div>
+            <div class="mod-chip done">Virtual Card (NFC)</div>
+            <div class="mod-chip done">E-book Corner</div>
+          </div>
+        </div>
+        <div class="module-group">
+          <div class="module-group-head">Engage</div>
+          <div class="chips">
+            <div class="mod-chip done">Birthdays &amp; Anniv.</div>
+            <div class="mod-chip static">Suggestion Box</div>
+          </div>
+        </div>
+        <div class="module-group">
+          <div class="module-group-head">HR</div>
+          <div class="chips">
+            <div class="mod-chip done">Attendance &amp; Punch</div>
+            <div class="mod-chip done">Cash Advance</div>
+            <div class="mod-chip done">Employee Directory</div>
+            <div class="mod-chip done">Leave Management</div>
+            <div class="mod-chip done">Movement / Visit</div>
+            <div class="mod-chip done">Pay Slip</div>
+            <div class="mod-chip done">Requisition</div>
+          </div>
+        </div>
+        <div class="module-group">
+          <div class="module-group-head">More</div>
+          <div class="chips">
+            <div class="mod-chip done">Benefits / Deals</div>
+            <div class="mod-chip done">Business Brain Portal</div>
+            <div class="mod-chip done">Holiday Calendar</div>
+            <div class="mod-chip done">Scientific Calculator</div>
+            <div class="mod-chip static">Upcoming Events</div>
+          </div>
+        </div>
+        <div class="module-group">
+          <div class="module-group-head">Platform</div>
+          <div class="chips">
+            <div class="mod-chip static">Admin Console</div>
+            <div class="mod-chip static">GitLab Dev Portal</div>
+            <div class="mod-chip beta">iOS App (TestFlight)</div>
+            <div class="mod-chip static">SSO Identity Hub</div>
+          </div>
+        </div>
+        <div class="module-group">
+          <div class="module-group-head">Safety</div>
+          <div class="chips">
+            <div class="mod-chip done">SOS Emergency</div>
+            <div class="mod-chip done">Support Hotline</div>
+          </div>
+        </div>
+        <div class="module-group">
+          <div class="module-group-head">Social</div>
+          <div class="chips">
+            <div class="mod-chip done">Betopia Feed</div>
+            <div class="mod-chip static">Groups &amp; Chat</div>
+            <div class="mod-chip done">Reels &amp; Reactions</div>
+            <div class="mod-chip done">Save / Bookmark</div>
+          </div>
+        </div>
+        <div class="module-group">
+          <div class="module-group-head">Wellbeing</div>
+          <div class="chips">
+            <div class="mod-chip done">Personal Finance</div>
+            <div class="mod-chip static">Team Pulse</div>
+            <div class="mod-chip static">Wellness</div>
+          </div>
+        </div>
+      </div>
+      <p class="speaker-note" style="margin-top: 12px;">29 live · 8 static UI · 1 upcoming (Online Meet) · iOS TestFlight beta. Join: testflight.apple.com/join/18DM2hP4</p>
+    </div>
+  </section>
+
+  <!-- SLIDE 6: HR -->
+  <section class="slide slide-split" data-slide="6" data-note="Focus on HR desk load reduction. Mention punch, leave, payslip as top 3 self-service wins. Odoo is the source of truth.">
+    <div class="reveal">
+      <div class="top-bar">
+        <div class="brand-mark"><img src="assets/betopia_logo.png" alt="" /> Betopian</div>
+        <div class="slide-no">06 / 14</div>
+      </div>
+      <h2>HR &amp; Self-Service</h2>
+      <p class="subtitle" style="margin-top: 8px;">Reducing HR desk load through ERP-connected mobile workflows.</p>
+      <ul class="points" style="margin-top: 16px;">
+        <li><strong>Attendance</strong>: punch log, today's status, manual attendance, schedules</li>
+        <li><strong>Leave</strong>: apply, track, and approve requests in-app</li>
+        <li><strong>Pay Slip</strong>: view and download securely</li>
+        <li><strong>Movement</strong>: employee visit / field movement tracking</li>
+        <li><strong>Requisition &amp; Cash Advance</strong>: operational requests from mobile</li>
+        <li><strong>Employee Directory</strong>: searchable org chart with local sync</li>
+      </ul>
+    </div>
+    <div class="shot-dual reveal">
+      <div class="shot-slot has-shot">
+        <img src="assets/4.jpeg" onload="onShotSlotLoad(this)" alt="HRMS hub" />
+      </div>
+      <div class="shot-slot has-shot">
+        <img src="assets/1.jpeg" onload="onShotSlotLoad(this)" alt="Home dashboard and check-in" />
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 7: SOCIAL -->
+  <section class="slide slide-split" data-slide="7" data-note="Stress: company-owned culture platform, NOT public Facebook. Reactions animate on this slide. Mention save/bookmark and reels.">
+    <div class="reveal">
+      <div class="top-bar">
+        <div class="brand-mark"><img src="assets/betopia_logo.png" alt="" /> Betopian</div>
+        <div class="slide-no">07 / 14</div>
+      </div>
+      <h2>Internal Social &amp; Engagement</h2>
+      <p class="subtitle" style="margin-top: 8px;">Betopia Feed is a company-owned culture platform, not public social media.</p>
+      <ul class="points" style="margin-top: 16px;">
+        <li><strong>Posts &amp; media</strong>: images, videos (live)</li>
+        <li><strong>Reels</strong>: vertical video feed with upload pipeline (live)</li>
+        <li><strong>Facebook-style reactions</strong>: Love, Haha, Angry (live)</li>
+        <li><strong>Save / bookmark</strong>: saved posts &amp; reels in profile tab (live)</li>
+        <li><strong>Groups &amp; in-app chat</strong>: static UI built, backend integration next</li>
+      </ul>
+      <p class="speaker-note">Feed API at social-media.betopiagroup.com is live. Groups and chat screens exist but are not connected yet.</p>
+    </div>
+    <div class="shot-dual reveal">
+      <div class="shot-slot has-shot">
+        <img src="assets/3.jpeg" onload="onShotSlotLoad(this)" alt="Betopia Feed" />
+      </div>
+      <div class="shot-slot has-shot">
+        <img src="assets/8.jpeg" onload="onShotSlotLoad(this)" alt="Reels" />
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 8: WELLBEING -->
+  <section class="slide slide-single" data-slide="8" data-note="Wellness, Team Pulse, Suggestion Box are static UI only. Personal Finance, SOS, Benefits, Betopia Daily are live. No screenshots yet for this slide. Be clear what works today vs static UI.">
+    <div>
+      <div class="top-bar">
+        <div class="brand-mark"><img src="assets/betopia_logo.png" alt="" /> Betopian</div>
+        <div class="slide-no">08 / 14</div>
+      </div>
+      <h2>Wellbeing, Finance &amp; Culture</h2>
+      <p class="subtitle" style="margin-top: 6px;">Beyond HR, supporting the whole person and Betopia culture.</p>
+    </div>
+    <div class="reveal">
+      <div class="card-grid">
+        <div class="card has-static"><strong>Wellness Module</strong><span>UI built. Backend and tracking not connected yet.</span><span class="ui-badge">Static UI</span></div>
+        <div class="card has-static"><strong>Team Pulse</strong><span>Mood check screen built. Survey API integration pending.</span><span class="ui-badge">Static UI</span></div>
+        <div class="card"><strong>Personal Finance</strong><span>Budget tracking + Zakat calculator (live)</span></div>
+        <div class="card"><strong>Benefits &amp; Deals</strong><span>Corporate affairs perks and partner offers (live)</span></div>
+        <div class="card"><strong>Betopia Daily</strong><span>Company stories from betopiadaily.shop (live)</span></div>
+        <div class="card"><strong>SOS &amp; Support</strong><span>Emergency contacts, HR/IT hotlines (live)</span></div>
+        <div class="card has-static"><strong>Suggestion Box</strong><span>UI built. Submit and track flow not wired to API yet.</span><span class="ui-badge">Static UI</span></div>
+        <div class="card"><strong>People &amp; Events</strong><span>Birthdays, anniversaries, welcome new hires (live)</span></div>
+      </div>
+      <p class="speaker-note" style="margin-top: 14px;">5 modules live today · 3 static UI (Wellness, Team Pulse, Suggestion Box). Screenshots can be added when captured.</p>
+    </div>
+  </section>
+
+  <!-- SLIDE 9: COMMS & AI -->
+  <section class="slide slide-split" data-slide="9" data-note="Mail on mail.betopialimited.com. AI Chatbot + Policy Talk deflect HR queries. Announcements on home dashboard.">
+    <div class="reveal">
+      <div class="top-bar">
+        <div class="brand-mark"><img src="assets/betopia_logo.png" alt="" /> Betopian</div>
+        <div class="slide-no">09 / 14</div>
+      </div>
+      <h2>Communication &amp; Intelligence</h2>
+      <p class="subtitle" style="margin-top: 8px;">Keeping associates informed and supported 24/7.</p>
+      <div class="card-grid" style="margin-top: 14px;">
+        <div class="card"><strong>Corporate Mail</strong><span>IMAP at mail.betopialimited.com: inbox, compose, folders</span></div>
+        <div class="card"><strong>ERP Notifications</strong><span>Real-time alerts with badge on nav tab</span></div>
+        <div class="card"><strong>AI Chatbot</strong><span>HR &amp; company Q&amp;A powered by OpenAI</span></div>
+        <div class="card"><strong>Policy Talk</strong><span>RAG search across HR policy PDFs</span></div>
+        <div class="card"><strong>Takora AI</strong><span>Conversational assistant module</span></div>
+        <div class="card"><strong>Announcements</strong><span>Company-wide broadcasts on home dashboard</span></div>
+      </div>
+    </div>
+    <div class="shot-quad reveal">
+      <div class="shot-slot has-shot">
+        <img src="assets/2.jpeg" onload="onShotSlotLoad(this)" alt="Corporate Mail" />
+      </div>
+      <div class="shot-slot has-shot">
+        <img src="assets/5.jpeg" onload="onShotSlotLoad(this)" alt="Notifications" />
+      </div>
+      <div class="shot-slot has-shot">
+        <img src="assets/6.jpeg" onload="onShotSlotLoad(this)" alt="Betopia AI" />
+      </div>
+      <div class="shot-slot has-shot">
+        <img src="assets/7.jpeg" onload="onShotSlotLoad(this)" alt="Policy Talk" />
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 10: COMPLETION STATUS -->
+  <section class="slide slide-single" data-slide="10" data-note="Key slide. Overall 74% complete. 29 live, 8 static UI, 1 upcoming, iOS TestFlight beta. Formula: 29 live out of 39 scoped modules. Bars animate on entry.">
+    <div>
+      <div class="top-bar">
+        <div class="brand-mark"><img src="assets/betopia_logo.png" alt="" /> Betopian</div>
+        <div class="slide-no">10 / 14</div>
+      </div>
+      <h2>Project Completion Status</h2>
+      <p class="subtitle" style="margin-top: 6px;">Android v1.0.0: honest progress by workstream (6 June 2026).</p>
+    </div>
+    <div class="reveal">
+      <div class="completion-hero">
+        <div class="ring" style="--pct:74"><span>74%</span></div>
+        <div>
+          <div style="font-size:1.1rem; font-weight:700; color:#fff; margin-bottom:6px;">Platform Complete (Phase 1)</div>
+          <div style="font-size:0.84rem; color:var(--slate); line-height:1.55;">29 modules live · 8 static UI · 1 upcoming · iOS TestFlight beta live<br/>Android v1.0.0 + iPhone beta · Remaining 26% = static backends, SSO, Online Meet rollout, App Store iOS</div>
+        </div>
+      </div>
+      <div class="progress-list" style="margin-top: 22px;">
+        <div class="prog-item"><label>HR &amp; ERP Self-Service</label><div class="prog-bar"><div class="prog-fill" style="--w:95%"></div></div><span class="prog-pct">95%</span></div>
+        <div class="prog-item"><label>Internal Social Feed</label><div class="prog-bar"><div class="prog-fill" style="--w:80%"></div></div><span class="prog-pct">80%</span></div>
+        <div class="prog-item"><label>Mail &amp; Notifications</label><div class="prog-bar"><div class="prog-fill" style="--w:82%"></div></div><span class="prog-pct">82%</span></div>
+        <div class="prog-item"><label>AI (Chatbot, Policy, Takora)</label><div class="prog-bar"><div class="prog-fill" style="--w:78%"></div></div><span class="prog-pct">78%</span></div>
+        <div class="prog-item"><label>Wellbeing &amp; Culture</label><div class="prog-bar"><div class="prog-fill" style="--w:50%"></div></div><span class="prog-pct">50%</span></div>
+        <div class="prog-item"><label>Auth &amp; Security</label><div class="prog-bar"><div class="prog-fill" style="--w:75%"></div></div><span class="prog-pct">75%</span></div>
+        <div class="prog-item"><label>SSO &amp; Central Admin</label><div class="prog-bar"><div class="prog-fill" style="--w:12%"></div></div><span class="prog-pct">12%</span></div>
+        <div class="prog-item"><label>Static UI modules (8)</label><div class="prog-bar"><div class="prog-fill" style="--w:25%"></div></div><span class="prog-pct">25%</span></div>
+        <div class="prog-item"><label>iOS (TestFlight beta)</label><div class="prog-bar"><div class="prog-fill" style="--w:65%"></div></div><span class="prog-pct">65%</span></div>
+        <div class="prog-item"><label>Analytics dashboard</label><div class="prog-bar"><div class="prog-fill" style="--w:8%"></div></div><span class="prog-pct">8%</span></div>
+      </div>
+      <p class="speaker-note" style="margin-top: 14px;">Phase 1 (now): 29 live modules. Phase 2: wire 8 static UI screens, Online Meet rollout, then SSO central hub.</p>
+    </div>
+  </section>
+
+  <!-- SLIDE 11: TECH & SECURITY -->
+  <section class="slide slide-single" data-slide="11" data-note="Split clearly: what we use TODAY vs FUTURE. Today: JWT, refresh token, device ID, secure mail storage, location guard, Firestore version gate. Future: SSO, RBAC, cert pinning, MFA, audit logs.">
+    <div>
+      <div class="top-bar">
+        <div class="brand-mark"><img src="assets/betopia_logo.png" alt="" /> Betopian</div>
+        <div class="slide-no">11 / 14</div>
+      </div>
+      <h2>Technology, Security &amp; Governance</h2>
+      <p class="subtitle" style="margin-top: 6px;">What protects the platform today, and what we will add in the SSO phase.</p>
+    </div>
+    <div class="reveal">
+      <div class="arch-flow">
+        <div class="arch-node"><strong>Flutter App</strong>Android v1.0.0<br />iOS TestFlight beta</div>
+        <div class="arch-arrow">→</div>
+        <div class="arch-node"><strong>Dual Backend</strong>ERP (Odoo) REST<br />Social Media API</div>
+        <div class="arch-arrow">→</div>
+        <div class="arch-node"><strong>Firebase Firestore</strong>Version gate<br />Remote API config</div>
+      </div>
+      <div class="sec-columns">
+        <div class="sec-box now">
+          <h4>Implemented today (v1.0.0)</h4>
+          <ul>
+            <li><strong>ERP login</strong>: email/password with JWT Bearer token + Odoo session cookie</li>
+            <li><strong>Token refresh</strong>: automatic refresh on 401, forced logout on invalid session</li>
+            <li><strong>Device binding</strong>: Android ID / iOS vendor ID sent at login</li>
+            <li><strong>Mail security</strong>: IMAP/SMTP credentials in Flutter Secure Storage (OS encrypted)</li>
+            <li><strong>Location guard</strong>: GPS required, blocking dialog if disabled, location cached for compliance</li>
+            <li><strong>Version enforcement</strong>: Firestore APP_VERSION blocks outdated builds</li>
+            <li><strong>HTTPS APIs</strong>: erp.betopiagroup.com, social-media API, mail.betopialimited.com</li>
+            <li><strong>Separate API auth</strong>: Social feed uses dedicated Bearer + session headers</li>
+            <li><strong>Remote secrets</strong>: OpenAI, Gemini, Pinecone keys loaded from Firestore (not hardcoded)</li>
+            <li><strong>Architecture</strong>: Repository pattern, Provider state, bilingual EN/BN UI</li>
+          </ul>
+        </div>
+        <div class="sec-box future">
+          <h4>Planned (SSO &amp; Phase 2)</h4>
+          <ul>
+            <li><strong>SSO / OIDC</strong>: single @betopialimited.com identity across all modules</li>
+            <li><strong>Unified mail auth</strong>: no separate mail password after SSO</li>
+            <li><strong>Central RBAC</strong>: role-based access from Admin Console</li>
+            <li><strong>Certificate pinning</strong>: stricter TLS validation on production APIs</li>
+            <li><strong>MFA / 2FA</strong>: optional second factor for sensitive HR actions</li>
+            <li><strong>Biometric app lock</strong>: fingerprint/face unlock for app open</li>
+            <li><strong>Audit logging</strong>: who accessed what, when, from which device</li>
+            <li><strong>App attestation</strong>: Play Integrity / Apple DeviceCheck</li>
+            <li><strong>Security review</strong>: penetration test before full 5,000-user rollout</li>
+            <li><strong>GitLab token vault</strong>: secure dev portal credentials inside Betopian</li>
+          </ul>
+        </div>
+      </div>
+      <p class="speaker-note" style="margin-top: 10px;">Be transparent: mail still needs a second login today. SSO phase removes that and centralises control.</p>
+    </div>
+  </section>
+
+  <!-- SLIDE 12: SSO VISION -->
+  <section class="slide slide-split" data-slide="12" data-note="Vision slide. One SSO login controls Email, Social, AI, ERP, Betopia Daily, GitLab. Click hub nodes live. Today separate logins. Tomorrow Betopia Identity Hub.">
+    <div class="reveal">
+      <div class="top-bar">
+        <div class="brand-mark"><img src="assets/betopia_logo.png" alt="" /> Betopian</div>
+        <div class="slide-no">12 / 14</div>
+      </div>
+      <h2>Next: Betopia Identity Hub (SSO)</h2>
+      <p class="subtitle" style="margin-top: 8px;">Vision for one central login. SSO, GitLab, and Admin Console screens exist today as static UI only.</p>
+      <ul class="points" style="margin-top: 16px;">
+        <li><strong>Single Sign-On</strong>: one @betopialimited.com identity for app, mail, feed, AI, ERP</li>
+        <li><strong>Central Admin Console</strong>: IT/HR manages access, roles, and service toggles from one dashboard</li>
+        <li><strong>Unified session</strong>: no separate mail password; token propagated across all modules</li>
+        <li><strong>GitLab integration</strong>: dev teams see pipelines, MRs, releases inside Betopian</li>
+        <li><strong>Service registry</strong>: Email, Social Media API, Betopia AI, ERP, and Betopia Daily, all registered and monitored</li>
+      </ul>
+      <div class="hub-detail" id="hub-detail">Click a service node on the right to see how SSO connects it.</div>
+    </div>
+    <div class="hub-wrap reveal">
+      <div class="hub-center">Betopia<br/>Identity<br/>Hub</div>
+      <div class="hub-node n1 active" data-hub="erp"><strong>ERP</strong>Odoo / Business Brain</div>
+      <div class="hub-node n2" data-hub="mail"><strong>Email</strong>mail.betopialimited.com</div>
+      <div class="hub-node n3" data-hub="social"><strong>Social Media</strong>Feed &amp; Reels API</div>
+      <div class="hub-node n4" data-hub="ai"><strong>Betopia AI</strong>Chatbot + Policy Talk</div>
+      <div class="hub-node n5" data-hub="daily"><strong>Betopia Daily</strong>Stories &amp; Culture</div>
+      <div class="hub-node n6" data-hub="gitlab"><strong>GitLab</strong>CI/CD &amp; DevOps</div>
+      <div class="hub-node n7" data-hub="admin"><strong>Admin Console</strong>Central Control</div>
+    </div>
+  </section>
+
+  <!-- SLIDE 13: BUSINESS VALUE -->
+  <section class="slide slide-single" data-slide="13" data-note="Lead with delivered value only. Top row: platform facts. Cards: business impact. Bottom row: 7 HR flows, 4 help channels, 5000 associates, 10+ tools consolidated. Adoption KPIs start after wider rollout.">
+    <div>
+      <div class="top-bar">
+        <div class="brand-mark"><img src="assets/betopia_logo.png" alt="" /> Betopian</div>
+        <div class="slide-no">13 / 14</div>
+      </div>
+      <h2>Business Value &amp; Success Metrics</h2>
+      <p class="subtitle" style="margin-top: 6px;">Why Betopian matters to Betopia Group. Measurable impact for ~5,000 associates.</p>
+    </div>
+    <div class="reveal">
+      <div class="value-highlight">
+        <div class="metric"><div class="val">1</div><div class="lbl">App replaces 10+ tools</div><div class="value-target">Single entry point</div></div>
+        <div class="metric"><div class="val">29</div><div class="lbl">Live modules in app</div><div class="value-target">Self-service ready</div></div>
+        <div class="metric"><div class="val">74%</div><div class="lbl">Platform delivered</div><div class="value-target">v1.0.0 + iOS beta</div></div>
+        <div class="metric"><div class="val">2</div><div class="lbl">Platforms today</div><div class="value-target">Android + TestFlight</div></div>
+      </div>
+      <div class="card-grid">
+        <div class="card"><strong>HR cost reduction</strong><span>Punch, leave, payslip, movement, requisition, and cash advance on mobile. Fewer manual HR desk requests.</span></div>
+        <div class="card"><strong>Time saved per associate</strong><span>No ERP web login, no separate portals. Average HR action drops from minutes to seconds.</span></div>
+        <div class="card"><strong>Data sovereignty</strong><span>Internal feed and mail on company infrastructure. Culture content stays inside Betopia, not public social media.</span></div>
+        <div class="card"><strong>Support deflection</strong><span>Chatbot, Policy Talk (RAG), FAQ, and SOS reduce repeat HR/IT calls.</span></div>
+        <div class="card"><strong>Compliance &amp; audit</strong><span>GPS-verified attendance, device-bound login, version-controlled rollout, encrypted mail credentials.</span></div>
+        <div class="card"><strong>Employer brand</strong><span>Virtual NFC card, birthdays, announcements, Betopia Daily. Modern digital workplace image.</span></div>
+        <div class="card"><strong>Leadership visibility</strong><span>ERP notifications, feed engagement, and future Team Pulse give real-time culture signals.</span></div>
+        <div class="card"><strong>IT consolidation</strong><span>One Flutter codebase, dual API backend, Firestore remote config. Lower long-term maintenance cost.</span></div>
+      </div>
+      <div class="metric-row" style="margin-top: 14px;">
+        <div class="metric"><div class="val">7</div><div class="lbl">HR self-service workflows live</div><div class="value-target">Punch, leave, pay, movement, requisition, cash advance, benefits</div></div>
+        <div class="metric"><div class="val">4</div><div class="lbl">Help &amp; AI channels active</div><div class="value-target">Chatbot, Policy Talk, FAQ, SOS</div></div>
+        <div class="metric"><div class="val">5,000</div><div class="lbl">Associates on one platform</div><div class="value-target">Android live · iOS TestFlight beta</div></div>
+        <div class="metric"><div class="val">10+</div><div class="lbl">Tools replaced by one app</div><div class="value-target">ERP, mail, feed, HRIS, AI, and more</div></div>
+      </div>
+      <p class="speaker-note" style="margin-top: 10px;">Adoption % (MAU, feed engagement, HR desk hours saved) will be measured after company-wide rollout. Today the value is structural: one governed app, 29 live modules, dual platform.</p>
+    </div>
+  </section>
+
+  <!-- SLIDE 14: ROADMAP + CLOSE -->
+  <section class="slide slide-title" data-slide="14" data-note="Close with roadmap quarters + clear ASK. Approve SSO budget, wider rollout, leadership adoption. Thank you: open for questions.">
+    <div class="content reveal" style="justify-content:flex-start;">
+      <div class="brand-mark"><img src="assets/betopia_logo.png" alt="" style="filter:brightness(1.2)" /> Betopian</div>
+      <h2 style="-webkit-text-fill-color: #fff; background: none; color: #fff; font-size: 2rem; margin-top: 12px;">Roadmap 2026 &amp; Ask</h2>
+      <div class="roadmap">
+        <div class="road-phase">
+          <h4>Q2 2026 · Now</h4>
+          <ul>
+            <li>Android v1.0.0 rollout</li>
+            <li>iOS TestFlight beta (live)</li>
+            <li>Feed &amp; mail adoption drive</li>
+            <li>Static UI backend wiring (8 modules)</li>
+          </ul>
+        </div>
+        <div class="road-phase q2">
+          <h4>Q3 2026 · SSO Phase</h4>
+          <ul>
+            <li>Betopia Identity Hub (SSO)</li>
+            <li>Central Admin Console</li>
+            <li>Unified mail auth (no 2nd login)</li>
+            <li>GitLab dev portal module</li>
+          </ul>
+        </div>
+        <div class="road-phase q3">
+          <h4>Q4 2026 · Scale</h4>
+          <ul>
+            <li>iOS App Store release</li>
+            <li>Analytics &amp; MAU dashboard</li>
+            <li>Push notification orchestration</li>
+            <li>LMS / learning modules</li>
+          </ul>
+        </div>
+        <div class="road-phase q4">
+          <h4>2027 · Expand</h4>
+          <ul>
+            <li>Expense claims &amp; DMS</li>
+            <li>Multi-subsidiary support</li>
+            <li>Biometric attendance hardware</li>
+            <li>Audit &amp; compliance reporting</li>
+          </ul>
+        </div>
+      </div>
+      <div class="close-completion">
+        <div class="pct">74%</div>
+        <div class="detail">
+          <strong>Platform completion (v1.0.0)</strong><br />
+          29 modules live · 8 static UI · iOS TestFlight beta available<br />
+          Android production + iPhone beta = dual-platform delivery today<br />
+          <a class="testflight-link" href="https://testflight.apple.com/join/18DM2hP4" target="_blank" rel="noopener">testflight.apple.com/join/18DM2hP4</a>
+        </div>
+      </div>
+      <ul class="points ask-list" style="margin-top: 14px;">
+        <li><strong>Approve Phase 2 budget</strong>: SSO hub + admin console + GitLab integration</li>
+        <li><strong>Endorse leadership adoption</strong>: feed posts &amp; mail usage set the tone</li>
+        <li><strong>Align KPIs now</strong>: baseline MAU, HR self-service %, feed engagement</li>
+      </ul>
+      <p class="thank-you" style="margin-top:16px; font-size:1.6rem;">Thank you.</p>
+      <p style="color: var(--text-dim); font-size: 0.9rem; margin-top: 4px; line-height: 1.6;">
+        Mehedi Hasan Shuvo<br />
+        <span style="color:#FFD4B0; font-weight:600;">Software Engineer</span><br />
+        01303129515 · Questions welcome
+      </p>
+    </div>
+    <div style="display:flex; gap:20px; align-items:flex-end; justify-content:flex-end;">
+      <img src="assets/qr.png" alt="QR Demo" class="qr-closing" />
+    </div>
+  </section>
+
+</div>
+
+<!-- Overview grid -->
+<div class="overview-grid" id="overview">
+  <div class="overview-item current" data-go="0"><span>01 Title</span></div>
+  <div class="overview-item" data-go="1"><span>02 Summary</span></div>
+  <div class="overview-item" data-go="2"><span>03 Context</span></div>
+  <div class="overview-item" data-go="3"><span>04 Platform</span></div>
+  <div class="overview-item" data-go="4"><span>05 Modules</span></div>
+  <div class="overview-item" data-go="5"><span>06 HR</span></div>
+  <div class="overview-item" data-go="6"><span>07 Social</span></div>
+  <div class="overview-item" data-go="7"><span>08 Wellbeing</span></div>
+  <div class="overview-item" data-go="8"><span>09 Comms</span></div>
+  <div class="overview-item" data-go="9"><span>10 Status</span></div>
+  <div class="overview-item" data-go="10"><span>11 Tech</span></div>
+  <div class="overview-item" data-go="11"><span>12 SSO Hub</span></div>
+  <div class="overview-item" data-go="12"><span>13 Value</span></div>
+  <div class="overview-item" data-go="13"><span>14 Roadmap</span></div>
+</div>
+
+<div class="progress-track"><div class="progress-fill" id="progress" style="width:7%"></div></div>
+
+<nav class="nav-dots" id="dots"></nav>
+
+<div class="controls">
+  <span class="hint-key">← → Space · G overview · N notes · F fullscreen</span>
+  <button type="button" id="notes-btn">Notes</button>
+  <button type="button" id="prev">←</button>
+  <button type="button" id="next">→</button>
+  <button type="button" id="fs">Full</button>
+</div>
+
+<div class="notes-panel" id="notes-panel">
+  <strong>Speaker Note</strong>
+  <span id="notes-text"></span>
+</div>
+
+<script>
+  const slides = [...document.querySelectorAll('.slide')];
+  let current = 0;
+  let notesOpen = false;
+
+  // Build dots
+  const dotsEl = document.getElementById('dots');
+  slides.forEach((_, i) => {
+    const b = document.createElement('button');
+    b.className = 'dot' + (i === 0 ? ' active' : '');
+    b.type = 'button';
+    b.setAttribute('aria-label', 'Slide ' + (i + 1));
+    b.onclick = () => show(i);
+    dotsEl.appendChild(b);
+  });
+
+  function show(i, dir = 1) {
+    if (i < 0 || i >= slides.length || i === current) return;
+    const prev = slides[current];
+    prev.classList.remove('active');
+    prev.classList.add('exit-left');
+    setTimeout(() => prev.classList.remove('exit-left'), 500);
+
+    current = i;
+    slides.forEach((s, idx) => s.classList.toggle('active', idx === current));
+    document.querySelectorAll('.dot').forEach((d, idx) => d.classList.toggle('active', idx === current));
+    document.getElementById('progress').style.width = ((current + 1) / slides.length * 100) + '%';
+    document.querySelectorAll('.overview-item').forEach((o, idx) => o.classList.toggle('current', idx === current));
+    document.getElementById('notes-text').textContent = slides[current].dataset.note || '';
+    animateCounters(slides[current]);
+    tryLoadShots(slides[current]);
+  }
+
+  document.getElementById('prev').onclick = () => show(current - 1, -1);
+  document.getElementById('next').onclick = () => show(current + 1, 1);
+  document.getElementById('fs').onclick = () => {
+    if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+    else document.exitFullscreen();
+  };
+  document.getElementById('notes-btn').onclick = () => {
+    notesOpen = !notesOpen;
+    document.getElementById('notes-panel').classList.toggle('open', notesOpen);
+  };
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); show(current + 1); }
+    if (e.key === 'ArrowLeft') { e.preventDefault(); show(current - 1); }
+    if (e.key === 'f' || e.key === 'F') document.getElementById('fs').click();
+    if (e.key === 'n' || e.key === 'N') document.getElementById('notes-btn').click();
+    if (e.key === 'g' || e.key === 'G') document.getElementById('overview').classList.toggle('open');
+    if (e.key === 'Escape') document.getElementById('overview').classList.remove('open');
+  });
+
+  document.getElementById('overview').onclick = (e) => {
+    const item = e.target.closest('.overview-item');
+    if (item) {
+      show(+item.dataset.go);
+      document.getElementById('overview').classList.remove('open');
+    }
+  };
+
+  // Before/After toggle
+  document.querySelectorAll('.toggle-btn').forEach(btn => {
+    btn.onclick = () => {
+      document.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      document.querySelectorAll('.panel-before, .panel-after').forEach(p => p.classList.remove('show'));
+      document.querySelector('.panel-' + btn.dataset.panel).classList.add('show');
+    };
+  });
+
+  // Platform tab phone previews
+  const tabScreens = {
+    home: `<div class="ui-preview"><div class="ui-header"><h4>Home</h4><p>Dashboard</p></div><div class="ui-punch"><div class="row"><span>Punch</span><strong style="color:var(--green)">Active</strong></div><div class="btn">Check In</div></div><div class="ui-modules"><div class="ui-mod" style="color:var(--brand-glow);font-size:8px;font-weight:700">HR</div><div class="ui-mod" style="color:#6366F1;font-size:8px;font-weight:700">LV</div><div class="ui-mod" style="color:var(--green);font-size:8px;font-weight:700">$</div><div class="ui-mod" style="color:#8B5CF6;font-size:8px;font-weight:700">DIR</div></div><div class="ui-nav"><span class="on">Home</span><span>Feed</span><span>Mail</span><span>Alert</span><span>More</span></div></div>`,
+    feed: `<div class="ui-preview"><div class="ui-feed-header"><strong>Feed</strong><span>+</span></div><div class="ui-post"><div class="ph"></div><div class="meta"><strong style="font-size:8px">Company Update</strong></div><div class="ui-reactions"><span>L</span><span>H</span><span>A</span></div></div><div class="ui-nav"><span>Home</span><span class="on">Feed</span><span>Mail</span><span>Alert</span><span>More</span></div></div>`,
+    mail: `<div class="ui-preview"><div class="ui-feed-header"><strong>Mail</strong><span style="background:var(--brand);color:white;font-size:7px;padding:2px 6px;border-radius:8px;">5</span></div><div class="ui-mail-item unread"><div class="ui-avatar"></div><div><div style="font-size:8px;font-weight:700">Inbox</div><div style="font-size:7px;color:#94A3B8">New messages...</div></div></div><div class="ui-mail-item"><div class="ui-avatar" style="background:linear-gradient(135deg,var(--brand),var(--brand-glow))"></div><div><div style="font-size:8px;font-weight:700">Sent</div></div></div><div class="ui-nav"><span>Home</span><span>Feed</span><span class="on">Mail</span><span>Alert</span><span>More</span></div></div>`,
+    notif: `<div class="ui-preview" style="background:#F7F8FA"><div class="ui-feed-header"><strong>Notifications</strong></div><div style="padding:8px"><div style="background:#FFF7EE;border-left:3px solid var(--brand);padding:10px;border-radius:8px;margin-bottom:6px;font-size:8px"><strong>Leave Approved</strong><br><span style="color:#94A3B8">2h ago</span></div><div style="background:white;padding:10px;border-radius:8px;font-size:8px;border:1px solid #E2E8F0"><strong>New Announcement</strong></div></div><div class="ui-nav"><span>Home</span><span>Feed</span><span>Mail</span><span class="on">Alert</span><span>More</span></div></div>`,
+    more: `<div class="ui-preview" style="background:#F7F8FA;padding-top:36px"><div style="padding:12px;display:grid;gap:8px"><div style="background:white;padding:12px;border-radius:10px;font-size:9px;font-weight:600">Settings</div><div style="background:white;padding:12px;border-radius:10px;font-size:9px;font-weight:600">Policy Talk</div><div style="background:white;padding:12px;border-radius:10px;font-size:9px;font-weight:600">Chatbot</div><div style="background:white;padding:12px;border-radius:10px;font-size:9px;font-weight:600">Logout</div></div><div class="ui-nav"><span>Home</span><span>Feed</span><span>Mail</span><span>Alert</span><span class="on">More</span></div></div>`
+  };
+
+  const tabShots = {
+    home: 'assets/1.jpeg',
+    feed: 'assets/3.jpeg',
+    mail: 'assets/2.jpeg',
+    notif: 'assets/5.jpeg'
+  };
+  const tabPhone = document.getElementById('tab-phone');
+  function setTab(tab) {
+    tabPhone.classList.remove('has-shot');
+    tabPhone.innerHTML = tabScreens[tab] || tabScreens.home;
+    const shot = tabShots[tab];
+    if (!shot) return;
+    const ext = new Image();
+    ext.className = 'screenshot';
+    ext.alt = tab + ' screen';
+    ext.onload = () => {
+      tabPhone.classList.add('has-shot');
+      tabPhone.querySelector('.ui-preview')?.remove();
+      tabPhone.appendChild(ext);
+    };
+    ext.onerror = () => {};
+    ext.src = shot;
+  }
+  setTab('home');
+
+  document.querySelectorAll('#platform-tabs .tab-btn').forEach(btn => {
+    btn.onclick = () => {
+      document.querySelectorAll('#platform-tabs .tab-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      setTab(btn.dataset.tab);
+    };
+  });
+
+  // Counter animation
+  function animateCounters(slide) {
+    slide.querySelectorAll('[data-count]').forEach(el => {
+      const target = +el.dataset.count;
+      let n = 0;
+      const step = Math.ceil(target / 20);
+      const t = setInterval(() => {
+        n += step;
+        if (n >= target) { n = target; clearInterval(t); }
+        el.textContent = n + (target === 29 ? '+' : '');
+      }, 40);
+    });
+  }
+
+  function onShotLoad(img) {
+    img.parentElement?.classList.add('has-shot');
+  }
+  function onShotSlotLoad(img) {
+    img.closest('.shot-slot')?.classList.add('has-shot');
+    img.closest('.shot-slot')?.querySelector('.ui-preview')?.remove();
+  }
+
+  function tryLoadShots(slide) {
+    slide.querySelectorAll('img[data-src]').forEach(img => {
+      if (!img.src && img.dataset.src) {
+        const probe = new Image();
+        probe.onload = () => { img.src = img.dataset.src; };
+        probe.src = img.dataset.src;
+      }
+    });
+  }
+
+  // SSO Hub interaction
+  const hubDetails = {
+    erp: 'ERP (Odoo). SSO token authenticates all HR actions including punch, leave, payslip, and requisition. No re-login when switching modules.',
+    mail: 'Email. SSO provisions IMAP credentials automatically. User signs in once and mail.betopialimited.com opens without a second password.',
+    social: 'Social Media API. Employee identity from SSO maps to feed profile. Posts, reels, and reactions tie to verified ERP employee ID.',
+    ai: 'Betopia AI. Chatbot and Policy Talk inherit SSO context and know your role, department, and policy access level.',
+    daily: 'Betopia Daily. SSO passes employee segment for personalised stories. Culture content filtered by role and location.',
+    gitlab: 'GitLab. Dev and IT teams access pipelines, merge requests, and release notes inside Betopian, linked to corporate identity.',
+    admin: 'Admin Console. IT and HR super-admins manage access to Email, Social, AI, ERP, Daily, and GitLab from one central dashboard.'
+  };
+  document.querySelectorAll('.hub-node').forEach(node => {
+    node.onclick = () => {
+      document.querySelectorAll('.hub-node').forEach(n => n.classList.remove('active'));
+      node.classList.add('active');
+      const key = node.dataset.hub;
+      document.getElementById('hub-detail').textContent = hubDetails[key] || '';
+    };
+  });
+
+  // Init
+  document.getElementById('notes-text').textContent = slides[0].dataset.note || '';
+  tryLoadShots(slides[0]);
+
+  // Preload screenshots
+  ['1','2','3','4','5','6','7','8'].forEach(n => {
+    const i = new Image();
+    i.src = 'assets/' + n + '.jpeg';
+  });
+</script>
+
+</body>
+</html>
