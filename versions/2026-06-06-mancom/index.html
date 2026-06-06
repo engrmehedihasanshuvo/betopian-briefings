@@ -776,11 +776,34 @@
       -webkit-text-fill-color: transparent;
       margin-top: 28px;
     }
+    .qr-closing-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      color: var(--text-dim);
+      transition: transform 0.2s ease, color 0.2s ease;
+    }
+    .qr-closing-wrap:hover {
+      color: #FFD4B0;
+      transform: translateY(-2px);
+    }
     .qr-closing {
       width: 120px;
       border-radius: 14px;
       background: white;
       padding: 8px;
+      display: block;
+    }
+    .qr-closing-label {
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      text-align: center;
+      line-height: 1.35;
+      max-width: 130px;
     }
 
     /* UI Chrome */
@@ -2108,7 +2131,7 @@
   </section>
 
   <!-- SLIDE 16: THANK YOU -->
-  <section class="slide slide-title" data-slide="16" data-note="Close warmly. Thank Management Committee. Open for questions. Point to QR for demo / TestFlight.">
+  <section class="slide slide-title" data-slide="16" data-note="Close warmly. QR = Android APK on Google Drive. iOS = TestFlight link in slide body. Open for questions.">
     <div class="content reveal" style="justify-content:center; align-items:center; text-align:center; flex:1;">
       <div class="brand-mark" style="justify-content:center;">
         <img src="assets/betopia_logo.png" alt="" style="filter:brightness(1.2)" /> Betopian
@@ -2133,7 +2156,10 @@
       </p>
     </div>
     <div style="display:flex; gap:20px; align-items:flex-end; justify-content:flex-end; padding:24px;">
-      <img src="assets/qr.png" alt="QR Demo" class="qr-closing" />
+      <a class="qr-closing-wrap" href="https://drive.google.com/file/d/1PIkX2f7dg24aov2fXvmuNIjyRCkKvk8T/view?usp=sharing" target="_blank" rel="noopener" title="Download Betopian Android APK">
+        <img src="assets/apk_qr.png" alt="Scan to download Betopian APK" class="qr-closing" />
+        <span class="qr-closing-label">Scan · Android APK<br />Google Drive</span>
+      </a>
     </div>
   </section>
 
