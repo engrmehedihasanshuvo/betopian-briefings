@@ -1012,6 +1012,70 @@
     .mod-chip.static { border-left: 3px solid #94A3B8; opacity: 0.92; }
     .mod-chip.beta { border-left: 3px solid var(--cyan); background: rgba(65, 191, 184, 0.08); }
     .mod-chip.plan { border-left: 3px solid #6366F1; opacity: 0.85; }
+    .mod-chip.v2 { border-left: 3px solid var(--cyan); }
+    .mod-chip-highlight {
+      background: rgba(247, 149, 73, 0.12);
+      border-color: rgba(247, 149, 73, 0.35);
+      color: #FFD4B0;
+    }
+    .module-group-sub {
+      font-size: 0.62rem;
+      color: var(--text-dim);
+      margin-top: 6px;
+      line-height: 1.4;
+    }
+    .module-tab-panel { display: none; }
+    .module-tab-panel.show { display: grid; }
+
+    .mod-compare {
+      margin-top: 14px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      overflow: hidden;
+      background: rgba(255,255,255,0.02);
+    }
+    .mod-compare-head {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+      background: rgba(247,149,73,0.08);
+      border-bottom: 1px solid var(--line);
+    }
+    .mod-compare-head span {
+      padding: 10px 14px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--brand);
+    }
+    .mod-compare-head span:last-child { color: var(--cyan); border-left: 1px solid var(--line); }
+    .mod-compare-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      border-bottom: 1px solid var(--line);
+    }
+    .mod-compare-row:last-child { border-bottom: none; }
+    .mod-compare-cell {
+      padding: 12px 14px;
+      min-height: 52px;
+    }
+    .mod-compare-cell.v2 {
+      border-left: 1px solid var(--line);
+      background: rgba(65,191,184,0.04);
+    }
+    .mod-compare-cell strong {
+      display: block;
+      font-size: 0.82rem;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+    .mod-compare-cell span {
+      font-size: 0.72rem;
+      color: var(--text-dim);
+      line-height: 1.45;
+    }
+    .mod-compare-cell.empty span { font-style: italic; opacity: 0.55; }
 
     .status-legend {
       display: flex;
@@ -1341,7 +1405,7 @@
     <div class="reveal">
       <div class="top-bar">
         <div class="brand-mark"><img src="assets/betopia_logo.png" alt="" /> Betopian</div>
-        <div class="slide-no">02 / 14</div>
+        <div class="slide-no">02 / 16</div>
       </div>
       <h2>Executive Summary</h2>
       <p class="subtitle" style="margin-top: 10px;">
@@ -1397,7 +1461,7 @@
     <div>
       <div class="top-bar">
         <div class="brand-mark"><img src="assets/betopia_logo.png" alt="" /> Betopian</div>
-        <div class="slide-no">03 / 14</div>
+        <div class="slide-no">03 / 16</div>
       </div>
       <h2>Why We Built This</h2>
     </div>
@@ -1445,7 +1509,7 @@
     <div class="reveal">
       <div class="top-bar">
         <div class="brand-mark"><img src="assets/betopia_logo.png" alt="" /> Betopian</div>
-        <div class="slide-no">04 / 14</div>
+        <div class="slide-no">04 / 16</div>
       </div>
       <h2>Platform at a Glance</h2>
       <p class="subtitle" style="margin-top: 8px;">Five-tab architecture designed for daily employee habits. <em style="color:var(--brand)">Click tabs →</em></p>
@@ -1475,23 +1539,22 @@
   </section>
 
   <!-- SLIDE 5: MODULE ECOSYSTEM -->
-  <section class="slide slide-single" data-slide="5" data-note="Green = live/working. Grey = static UI only. Purple = upcoming. Cyan = iOS TestFlight beta. 29 live, 8 static UI, 1 upcoming, 1 iOS beta. 39 scoped modules, 74% platform complete.">
+  <section class="slide slide-single" data-slide="5" data-note="INTERACTIVE: v1.0 vs Version 2.0 tabs. Must mention: Corporate Benefits + Employee Benefits (two tabs), Welcome New Employees on home, Betopia Daily commerce. 35 live modules. No static/upcoming labels to Mancom.">
     <div>
       <div class="top-bar">
         <div class="brand-mark"><img src="assets/betopia_logo.png" alt="" /> Betopian</div>
-        <div class="slide-no">05 / 14</div>
+        <div class="slide-no">05 / 16</div>
       </div>
       <h2>Complete Module Ecosystem</h2>
-      <p class="subtitle" style="margin-top: 6px;">Full product map with honest delivery status as of v1.0.0.</p>
+      <p class="subtitle" style="margin-top: 6px;">Full product map · <em style="color:var(--brand)">Click tab →</em> v1.0 delivered today vs Version 2.0 roadmap.</p>
     </div>
     <div class="reveal">
-      <div class="status-legend">
-        <span class="s-done">Live (working)</span>
-        <span class="s-static">Static UI only</span>
-        <span class="s-plan">Upcoming</span>
-        <span class="s-beta">Beta (TestFlight)</span>
+      <div class="tabs-interactive" id="module-tabs">
+        <button class="tab-btn active" data-modtab="v1">v1.0 · Delivered</button>
+        <button class="tab-btn" data-modtab="v2">Version 2.0</button>
       </div>
-      <div class="module-groups">
+
+      <div class="module-tab-panel module-groups show" id="module-panel-v1">
         <div class="module-group">
           <div class="module-group-head">AI</div>
           <div class="chips">
@@ -1507,24 +1570,38 @@
             <div class="mod-chip done">Corporate Mail (IMAP)</div>
             <div class="mod-chip done">ERP Notifications</div>
             <div class="mod-chip done">MOM (Minutes of Meeting)</div>
-            <div class="mod-chip plan">Online Meet</div>
           </div>
+        </div>
+        <div class="module-group">
+          <div class="module-group-head">Commerce</div>
+          <div class="chips">
+            <div class="mod-chip done mod-chip-highlight">Betopia Daily</div>
+          </div>
+          <div class="module-group-sub">Betopian associates only · in-app store at betopiadaily.shop</div>
         </div>
         <div class="module-group">
           <div class="module-group-head">Culture</div>
           <div class="chips">
-            <div class="mod-chip done">Betopia Daily</div>
             <div class="mod-chip done">Photo Frame</div>
             <div class="mod-chip done">Virtual Card (NFC)</div>
             <div class="mod-chip done">E-book Corner</div>
           </div>
         </div>
         <div class="module-group">
+          <div class="module-group-head">Benefits</div>
+          <div class="chips">
+            <div class="mod-chip done mod-chip-highlight">Corporate Benefits</div>
+            <div class="mod-chip done mod-chip-highlight">Employee Benefits</div>
+          </div>
+          <div class="module-group-sub">Two tabs in app · partner deals + HR perks · home carousel</div>
+        </div>
+        <div class="module-group">
           <div class="module-group-head">Engage</div>
           <div class="chips">
+            <div class="mod-chip done mod-chip-highlight">Welcome New Employees</div>
             <div class="mod-chip done">Birthdays &amp; Anniv.</div>
-            <div class="mod-chip static">Suggestion Box</div>
           </div>
+          <div class="module-group-sub">New joiners by month · API-fed from employee directory</div>
         </div>
         <div class="module-group">
           <div class="module-group-head">HR</div>
@@ -1535,26 +1612,16 @@
             <div class="mod-chip done">Leave Management</div>
             <div class="mod-chip done">Movement / Visit</div>
             <div class="mod-chip done">Pay Slip</div>
-            <div class="mod-chip done">Requisition</div>
+            <div class="mod-chip done">Company Policy Library</div>
           </div>
         </div>
         <div class="module-group">
           <div class="module-group-head">More</div>
           <div class="chips">
-            <div class="mod-chip done">Benefits / Deals</div>
+            <div class="mod-chip done">Requisition</div>
             <div class="mod-chip done">Business Brain Portal</div>
             <div class="mod-chip done">Holiday Calendar</div>
             <div class="mod-chip done">Scientific Calculator</div>
-            <div class="mod-chip static">Upcoming Events</div>
-          </div>
-        </div>
-        <div class="module-group">
-          <div class="module-group-head">Platform</div>
-          <div class="chips">
-            <div class="mod-chip static">Admin Console</div>
-            <div class="mod-chip static">GitLab Dev Portal</div>
-            <div class="mod-chip beta">iOS App (TestFlight)</div>
-            <div class="mod-chip static">SSO Identity Hub</div>
           </div>
         </div>
         <div class="module-group">
@@ -1568,7 +1635,6 @@
           <div class="module-group-head">Social</div>
           <div class="chips">
             <div class="mod-chip done">Betopia Feed</div>
-            <div class="mod-chip static">Groups &amp; Chat</div>
             <div class="mod-chip done">Reels &amp; Reactions</div>
             <div class="mod-chip done">Save / Bookmark</div>
           </div>
@@ -1577,32 +1643,81 @@
           <div class="module-group-head">Wellbeing</div>
           <div class="chips">
             <div class="mod-chip done">Personal Finance</div>
-            <div class="mod-chip static">Team Pulse</div>
-            <div class="mod-chip static">Wellness</div>
+            <div class="mod-chip done">Fitness Check</div>
+          </div>
+          <div class="module-group-sub">Budget + Zakat · health steps sync (Google Fit / Health Connect)</div>
+        </div>
+        <div class="module-group">
+          <div class="module-group-head">Platform</div>
+          <div class="chips">
+            <div class="mod-chip done">Android v1.0.0</div>
+            <div class="mod-chip beta">iOS (TestFlight beta)</div>
           </div>
         </div>
       </div>
-      <p class="speaker-note" style="margin-top: 12px;">29 live · 8 static UI · 1 upcoming (Online Meet) · iOS TestFlight beta. Join: testflight.apple.com/join/18DM2hP4</p>
+
+      <div class="module-tab-panel module-groups" id="module-panel-v2" style="grid-template-columns: repeat(4, 1fr);">
+        <div class="module-group">
+          <div class="module-group-head">Comms &amp; Meet</div>
+          <div class="chips">
+            <div class="mod-chip v2">Online Meet</div>
+            <div class="mod-chip v2">Groups &amp; In-App Chat</div>
+          </div>
+        </div>
+        <div class="module-group">
+          <div class="module-group-head">Commerce</div>
+          <div class="chips">
+            <div class="mod-chip v2">Expanded Associate Store</div>
+            <div class="mod-chip v2">In-App Checkout</div>
+          </div>
+          <div class="module-group-sub">Deeper Betopia Daily integration beyond web store</div>
+        </div>
+        <div class="module-group">
+          <div class="module-group-head">Wellbeing &amp; Engage</div>
+          <div class="chips">
+            <div class="mod-chip v2">Wellness Module</div>
+            <div class="mod-chip v2">Team Pulse</div>
+            <div class="mod-chip v2">Suggestion Box</div>
+            <div class="mod-chip v2">Upcoming Events</div>
+          </div>
+        </div>
+        <div class="module-group">
+          <div class="module-group-head">Platform &amp; Identity</div>
+          <div class="chips">
+            <div class="mod-chip v2">SSO Identity Hub</div>
+            <div class="mod-chip v2">Admin Console</div>
+            <div class="mod-chip v2">GitLab Dev Portal</div>
+            <div class="mod-chip v2">iOS App Store Release</div>
+          </div>
+        </div>
+      </div>
+
+      <p class="speaker-note" style="margin-top: 12px;">v1.0: 35 modules delivered · call out Benefits (Corporate + Employee), Welcome New Employees, Betopia Daily. v2.0: next-phase roadmap. Do not mention static UI or upcoming labels in the room.</p>
     </div>
   </section>
 
   <!-- SLIDE 6: HR -->
-  <section class="slide slide-split" data-slide="6" data-note="Focus on HR desk load reduction. Mention punch, leave, payslip as top 3 self-service wins. Odoo is the source of truth.">
+  <section class="slide slide-split" data-slide="6" data-note="HR desk load reduction. Top wins: punch, leave, payslip. Cover HRMS hub, home punch card, directory, welcome new joiners, company policies. Cash Advance is next slide. Odoo = source of truth.">
     <div class="reveal">
       <div class="top-bar">
         <div class="brand-mark"><img src="assets/betopia_logo.png" alt="" /> Betopian</div>
-        <div class="slide-no">06 / 14</div>
+        <div class="slide-no">06 / 16</div>
       </div>
       <h2>HR &amp; Self-Service</h2>
-      <p class="subtitle" style="margin-top: 8px;">Reducing HR desk load through ERP-connected mobile workflows.</p>
-      <ul class="points" style="margin-top: 16px;">
-        <li><strong>Attendance</strong>: punch log, today's status, manual attendance, schedules</li>
-        <li><strong>Leave</strong>: apply, track, and approve requests in-app</li>
-        <li><strong>Pay Slip</strong>: view and download securely</li>
-        <li><strong>Movement</strong>: employee visit / field movement tracking</li>
-        <li><strong>Requisition &amp; Cash Advance</strong>: operational requests from mobile</li>
-        <li><strong>Employee Directory</strong>: searchable org chart with local sync</li>
-      </ul>
+      <p class="subtitle" style="margin-top: 8px;">ERP-connected HR workflows — Odoo is the source of truth.</p>
+      <div class="card-grid" style="margin-top: 14px;">
+        <div class="card"><strong>HRMS Hub</strong><span>Single portal: Leave, Attendance, Movement, Pay Slip</span></div>
+        <div class="card"><strong>Home Punch Card</strong><span>Today's check-in/out, late flag, hours worked — tap to attendance</span></div>
+        <div class="card"><strong>Attendance</strong><span>Punch log, date filters, manual attendance, work schedules</span></div>
+        <div class="card"><strong>Leave Management</strong><span>Apply by category (casual, medical, earned, duty, study) · track status</span></div>
+        <div class="card"><strong>Pay Slip</strong><span>View and download monthly salary securely</span></div>
+        <div class="card"><strong>Movement / Visit</strong><span>Log outdoor and field visits from mobile</span></div>
+        <div class="card"><strong>Employee Directory</strong><span>Searchable org lookup · public profile cards</span></div>
+        <div class="card"><strong>Welcome New Employees</strong><span>Current &amp; previous month joiners on home dashboard</span></div>
+        <div class="card"><strong>Company Policy Library</strong><span>HR policy PDFs and guidelines in-app</span></div>
+        <div class="card"><strong>ERP Notifications</strong><span>Leave, attendance and HR alerts in notification tab</span></div>
+      </div>
+      <p class="speaker-note" style="margin-top: 10px;">10 HR workflows live · Cash Advance has its own slide next · Requisition stays in module map (Slide 5).</p>
     </div>
     <div class="shot-dual reveal">
       <div class="shot-slot has-shot">
@@ -1614,12 +1729,41 @@
     </div>
   </section>
 
-  <!-- SLIDE 7: SOCIAL -->
-  <section class="slide slide-split" data-slide="7" data-note="Stress: company-owned culture platform, NOT public Facebook. Reactions animate on this slide. Mention save/bookmark and reels.">
+  <!-- SLIDE 7: CASH ADVANCE -->
+  <section class="slide slide-split" data-slide="7" data-note="Dedicated slide for Cash Advance. Home quick action → Summary + History tabs. Eligibility from ERP, one request per salary month, processing fee shown upfront, bank/cash funding. Mancom cares: self-service salary advance without HR desk.">
     <div class="reveal">
       <div class="top-bar">
         <div class="brand-mark"><img src="assets/betopia_logo.png" alt="" /> Betopian</div>
-        <div class="slide-no">07 / 14</div>
+        <div class="slide-no">07 / 16</div>
+      </div>
+      <h2>Cash Advance</h2>
+      <p class="subtitle" style="margin-top: 8px;">Salary advance self-service — ERP eligibility, transparent fees, full request history.</p>
+      <div class="card-grid" style="margin-top: 14px;">
+        <div class="card"><strong>Summary Tab</strong><span>Available balance, max days, processing fee %, usage meter</span></div>
+        <div class="card"><strong>Create Request</strong><span>Days-based amount · bank or cash funding · reason field</span></div>
+        <div class="card"><strong>History Tab</strong><span>Pending, approved, rejected — full application trail</span></div>
+        <div class="card"><strong>Monthly Rule</strong><span>One active request per salary month — prevents duplicate claims</span></div>
+        <div class="card"><strong>Payslip Transparency</strong><span>Processing fee and total deduction shown before submit</span></div>
+        <div class="card"><strong>Supervisor Context</strong><span>Eligible amount tied to supervisor and salary data from Odoo</span></div>
+      </div>
+      <p class="speaker-note" style="margin-top: 10px;">Launched from home priority grid · no HR desk visit · associates see limit before they apply.</p>
+    </div>
+    <div class="shot-dual reveal">
+      <div class="shot-slot has-shot">
+        <img src="assets/9.jpeg" onload="onShotSlotLoad(this)" alt="Cash Advance — Summary" />
+      </div>
+      <div class="shot-slot has-shot">
+        <img src="assets/10.jpeg" onload="onShotSlotLoad(this)" alt="Cash Advance — History / Create" />
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 8: SOCIAL -->
+  <section class="slide slide-split" data-slide="8" data-note="Stress: company-owned culture platform, NOT public Facebook. Reactions animate on this slide. Mention save/bookmark and reels.">
+    <div class="reveal">
+      <div class="top-bar">
+        <div class="brand-mark"><img src="assets/betopia_logo.png" alt="" /> Betopian</div>
+        <div class="slide-no">08 / 16</div>
       </div>
       <h2>Internal Social &amp; Engagement</h2>
       <p class="subtitle" style="margin-top: 8px;">Betopia Feed is a company-owned culture platform, not public social media.</p>
@@ -1642,37 +1786,181 @@
     </div>
   </section>
 
-  <!-- SLIDE 8: WELLBEING -->
-  <section class="slide slide-single" data-slide="8" data-note="Wellness, Team Pulse, Suggestion Box are static UI only. Personal Finance, SOS, Benefits, Betopia Daily are live. No screenshots yet for this slide. Be clear what works today vs static UI.">
+  <!-- SLIDE 9: WELLBEING -->
+  <section class="slide slide-single" data-slide="9" data-note="Wellbeing only. Left column = live today. Right = Version 2.0 roadmap. Do not say static UI to Mancom.">
     <div>
       <div class="top-bar">
         <div class="brand-mark"><img src="assets/betopia_logo.png" alt="" /> Betopian</div>
-        <div class="slide-no">08 / 14</div>
+        <div class="slide-no">09 / 16</div>
       </div>
-      <h2>Wellbeing, Finance &amp; Culture</h2>
-      <p class="subtitle" style="margin-top: 6px;">Beyond HR, supporting the whole person and Betopia culture.</p>
+      <h2>Wellbeing</h2>
+      <p class="subtitle" style="margin-top: 6px;">Physical health, safety, and associate support — delivered vs roadmap.</p>
     </div>
     <div class="reveal">
-      <div class="card-grid">
-        <div class="card has-static"><strong>Wellness Module</strong><span>UI built. Backend and tracking not connected yet.</span><span class="ui-badge">Static UI</span></div>
-        <div class="card has-static"><strong>Team Pulse</strong><span>Mood check screen built. Survey API integration pending.</span><span class="ui-badge">Static UI</span></div>
-        <div class="card"><strong>Personal Finance</strong><span>Budget tracking + Zakat calculator (live)</span></div>
-        <div class="card"><strong>Benefits &amp; Deals</strong><span>Corporate affairs perks and partner offers (live)</span></div>
-        <div class="card"><strong>Betopia Daily</strong><span>Company stories from betopiadaily.shop (live)</span></div>
-        <div class="card"><strong>SOS &amp; Support</strong><span>Emergency contacts, HR/IT hotlines (live)</span></div>
-        <div class="card has-static"><strong>Suggestion Box</strong><span>UI built. Submit and track flow not wired to API yet.</span><span class="ui-badge">Static UI</span></div>
-        <div class="card"><strong>People &amp; Events</strong><span>Birthdays, anniversaries, welcome new hires (live)</span></div>
+      <div class="mod-compare">
+        <div class="mod-compare-head">
+          <span>v1.0 · Delivered</span>
+          <span>Version 2.0</span>
+        </div>
+        <div class="mod-compare-row">
+          <div class="mod-compare-cell v1">
+            <strong>Fitness Check</strong>
+            <span>Daily steps, activity timer, stopwatch — Google Fit / Health Connect sync</span>
+          </div>
+          <div class="mod-compare-cell v2">
+            <strong>Wellness Module</strong>
+            <span>Full wellness tracking, goals, and HR-backed health programmes</span>
+          </div>
+        </div>
+        <div class="mod-compare-row">
+          <div class="mod-compare-cell v1">
+            <strong>SOS Emergency</strong>
+            <span>One-tap emergency contacts and escalation paths</span>
+          </div>
+          <div class="mod-compare-cell v2">
+            <strong>Team Pulse</strong>
+            <span>Daily mood check and mini survey for culture signals</span>
+          </div>
+        </div>
+        <div class="mod-compare-row">
+          <div class="mod-compare-cell v1">
+            <strong>Support Hotline</strong>
+            <span>HR &amp; IT help desk from home Support tile</span>
+          </div>
+          <div class="mod-compare-cell v2 empty">
+            <span>—</span>
+          </div>
+        </div>
       </div>
-      <p class="speaker-note" style="margin-top: 14px;">5 modules live today · 3 static UI (Wellness, Team Pulse, Suggestion Box). Screenshots can be added when captured.</p>
+      <p class="speaker-note" style="margin-top: 12px;">3 wellbeing features live · Wellness + Team Pulse on Version 2.0 roadmap.</p>
     </div>
   </section>
 
-  <!-- SLIDE 9: COMMS & AI -->
-  <section class="slide slide-split" data-slide="9" data-note="Mail on mail.betopialimited.com. AI Chatbot + Policy Talk deflect HR queries. Announcements on home dashboard.">
+  <!-- SLIDE 10: FINANCE -->
+  <section class="slide slide-single" data-slide="10" data-note="Finance &amp; Benefits slide. Corporate + Employee benefits tabs are live. Personal Finance with Zakat live. Version 2 = deeper financial wellness.">
+    <div>
+      <div class="top-bar">
+        <div class="brand-mark"><img src="assets/betopia_logo.png" alt="" /> Betopian</div>
+        <div class="slide-no">10 / 16</div>
+      </div>
+      <h2>Finance &amp; Benefits</h2>
+      <p class="subtitle" style="margin-top: 6px;">Personal money tools and associate perks — delivered vs roadmap.</p>
+    </div>
+    <div class="reveal">
+      <div class="mod-compare">
+        <div class="mod-compare-head">
+          <span>v1.0 · Delivered</span>
+          <span>Version 2.0</span>
+        </div>
+        <div class="mod-compare-row">
+          <div class="mod-compare-cell v1">
+            <strong>Personal Finance</strong>
+            <span>Budget tracking + Zakat calculator in More menu</span>
+          </div>
+          <div class="mod-compare-cell v2">
+            <strong>Financial Wellness Hub</strong>
+            <span>Savings goals, spending insights, and guided money coaching</span>
+          </div>
+        </div>
+        <div class="mod-compare-row">
+          <div class="mod-compare-cell v1">
+            <strong>Corporate Benefits</strong>
+            <span>Partner deals, category grid, searchable perks tab</span>
+          </div>
+          <div class="mod-compare-cell v2">
+            <strong>Expanded Perks Network</strong>
+            <span>More partners, geo-filtered offers, push alerts for new deals</span>
+          </div>
+        </div>
+        <div class="mod-compare-row">
+          <div class="mod-compare-cell v1">
+            <strong>Employee Benefits</strong>
+            <span>HR perks from career page + auto carousel on home</span>
+          </div>
+          <div class="mod-compare-cell v2 empty">
+            <span>—</span>
+          </div>
+        </div>
+      </div>
+      <p class="speaker-note" style="margin-top: 12px;">Benefits has two tabs in app — Corporate and Employee. Call both out to Mancom.</p>
+    </div>
+  </section>
+
+  <!-- SLIDE 11: CULTURE -->
+  <section class="slide slide-single" data-slide="11" data-note="Culture &amp; engagement. Betopia Daily = associate store. Suggestion Box + Upcoming Events = Version 2.0 only.">
+    <div>
+      <div class="top-bar">
+        <div class="brand-mark"><img src="assets/betopia_logo.png" alt="" /> Betopian</div>
+        <div class="slide-no">11 / 16</div>
+      </div>
+      <h2>Culture &amp; Engagement</h2>
+      <p class="subtitle" style="margin-top: 6px;">Betopia identity, people moments, and associate commerce — delivered vs roadmap.</p>
+    </div>
+    <div class="reveal">
+      <div class="mod-compare">
+        <div class="mod-compare-head">
+          <span>v1.0 · Delivered</span>
+          <span>Version 2.0</span>
+        </div>
+        <div class="mod-compare-row">
+          <div class="mod-compare-cell v1">
+            <strong>Betopia Daily</strong>
+            <span>Associate-only store at betopiadaily.shop — in-app WebView</span>
+          </div>
+          <div class="mod-compare-cell v2">
+            <strong>Expanded Associate Store</strong>
+            <span>Deeper checkout integration beyond web store</span>
+          </div>
+        </div>
+        <div class="mod-compare-row">
+          <div class="mod-compare-cell v1">
+            <strong>Photo Frame</strong>
+            <span>Team photo frames — Betopia Limited &amp; Group URLs</span>
+          </div>
+          <div class="mod-compare-cell v2">
+            <strong>Suggestion Box</strong>
+            <span>Submit, track, and vote on associate ideas</span>
+          </div>
+        </div>
+        <div class="mod-compare-row">
+          <div class="mod-compare-cell v1">
+            <strong>Virtual Card (NFC)</strong>
+            <span>Digital visiting card on home — tap to share</span>
+          </div>
+          <div class="mod-compare-cell v2">
+            <strong>Upcoming Events</strong>
+            <span>Internal programmes and activity calendar</span>
+          </div>
+        </div>
+        <div class="mod-compare-row">
+          <div class="mod-compare-cell v1">
+            <strong>E-book Corner</strong>
+            <span>Company reading library in-app</span>
+          </div>
+          <div class="mod-compare-cell v2 empty">
+            <span>—</span>
+          </div>
+        </div>
+        <div class="mod-compare-row">
+          <div class="mod-compare-cell v1">
+            <strong>People &amp; Moments</strong>
+            <span>Welcome New Employees, birthdays &amp; anniversaries on home</span>
+          </div>
+          <div class="mod-compare-cell v2 empty">
+            <span>—</span>
+          </div>
+        </div>
+      </div>
+      <p class="speaker-note" style="margin-top: 12px;">6 culture features live · Suggestion Box and Upcoming Events = Version 2.0.</p>
+    </div>
+  </section>
+
+  <!-- SLIDE 12: COMMS & AI -->
+  <section class="slide slide-split" data-slide="12" data-note="Mail on mail.betopialimited.com. AI Chatbot + Policy Talk deflect HR queries. Announcements on home dashboard.">
     <div class="reveal">
       <div class="top-bar">
         <div class="brand-mark"><img src="assets/betopia_logo.png" alt="" /> Betopian</div>
-        <div class="slide-no">09 / 14</div>
+        <div class="slide-no">12 / 16</div>
       </div>
       <h2>Communication &amp; Intelligence</h2>
       <p class="subtitle" style="margin-top: 8px;">Keeping associates informed and supported 24/7.</p>
@@ -1701,12 +1989,42 @@
     </div>
   </section>
 
-  <!-- SLIDE 10: COMPLETION STATUS -->
-  <section class="slide slide-single" data-slide="10" data-note="Key slide. Overall 74% complete. 29 live, 8 static UI, 1 upcoming, iOS TestFlight beta. Formula: 29 live out of 39 scoped modules. Bars animate on entry.">
+  <!-- SLIDE 13: SSO VISION -->
+  <section class="slide slide-split" data-slide="13" data-note="Vision slide. One SSO login controls Email, Social, AI, ERP, Betopia Daily, GitLab. Click hub nodes live. Today separate logins. Betopia Identity Hub.">
+    <div class="reveal">
+      <div class="top-bar">
+        <div class="brand-mark"><img src="assets/betopia_logo.png" alt="" /> Betopian</div>
+        <div class="slide-no">13 / 16</div>
+      </div>
+      <h2>Betopia Identity Hub (SSO)</h2>
+      <p class="subtitle" style="margin-top: 8px;">Vision for one central login across app, mail, feed, AI, ERP, and associate services.</p>
+      <ul class="points" style="margin-top: 16px;">
+        <li><strong>Single Sign-On</strong>: one @betopialimited.com identity for app, mail, feed, AI, ERP</li>
+        <li><strong>Central Admin Console</strong>: IT/HR manages access, roles, and service toggles from one dashboard</li>
+        <li><strong>Unified session</strong>: no separate mail password; token propagated across all modules</li>
+        <li><strong>GitLab integration</strong>: dev teams see pipelines, MRs, releases inside Betopian</li>
+        <li><strong>Service registry</strong>: Email, Social Media API, Betopia AI, ERP, and Betopia Daily, all registered and monitored</li>
+      </ul>
+      <div class="hub-detail" id="hub-detail">Click a service node on the right to see how SSO connects it.</div>
+    </div>
+    <div class="hub-wrap reveal">
+      <div class="hub-center">Betopia<br/>Identity<br/>Hub</div>
+      <div class="hub-node n1 active" data-hub="erp"><strong>ERP</strong>Odoo / Business Brain</div>
+      <div class="hub-node n2" data-hub="mail"><strong>Email</strong>mail.betopialimited.com</div>
+      <div class="hub-node n3" data-hub="social"><strong>Social Media</strong>Feed &amp; Reels API</div>
+      <div class="hub-node n4" data-hub="ai"><strong>Betopia AI</strong>Chatbot + Policy Talk</div>
+      <div class="hub-node n5" data-hub="daily"><strong>Betopia Daily</strong>Stories &amp; Culture</div>
+      <div class="hub-node n6" data-hub="gitlab"><strong>GitLab</strong>CI/CD &amp; DevOps</div>
+      <div class="hub-node n7" data-hub="admin"><strong>Admin Console</strong>Central Control</div>
+    </div>
+  </section>
+
+  <!-- SLIDE 14: COMPLETION STATUS -->
+  <section class="slide slide-single" data-slide="14" data-note="Key slide. Overall 74% complete. 35 live modules, iOS TestFlight beta. Bars animate on entry.">
     <div>
       <div class="top-bar">
         <div class="brand-mark"><img src="assets/betopia_logo.png" alt="" /> Betopian</div>
-        <div class="slide-no">10 / 14</div>
+        <div class="slide-no">14 / 16</div>
       </div>
       <h2>Project Completion Status</h2>
       <p class="subtitle" style="margin-top: 6px;">Android v1.0.0: honest progress by workstream (6 June 2026).</p>
@@ -1716,7 +2034,7 @@
         <div class="ring" style="--pct:74"><span>74%</span></div>
         <div>
           <div style="font-size:1.1rem; font-weight:700; color:#fff; margin-bottom:6px;">Platform Complete (Phase 1)</div>
-          <div style="font-size:0.84rem; color:var(--slate); line-height:1.55;">29 modules live · 8 static UI · 1 upcoming · iOS TestFlight beta live<br/>Android v1.0.0 + iPhone beta · Remaining 26% = static backends, SSO, Online Meet rollout, App Store iOS</div>
+          <div style="font-size:0.84rem; color:var(--slate); line-height:1.55;">35 modules delivered · Version 2.0 roadmap in progress · iOS TestFlight beta live<br/>Android v1.0.0 + iPhone beta · Remaining work = SSO hub, static backends, App Store iOS</div>
         </div>
       </div>
       <div class="progress-list" style="margin-top: 22px;">
@@ -1727,20 +2045,20 @@
         <div class="prog-item"><label>Wellbeing &amp; Culture</label><div class="prog-bar"><div class="prog-fill" style="--w:50%"></div></div><span class="prog-pct">50%</span></div>
         <div class="prog-item"><label>Auth &amp; Security</label><div class="prog-bar"><div class="prog-fill" style="--w:75%"></div></div><span class="prog-pct">75%</span></div>
         <div class="prog-item"><label>SSO &amp; Central Admin</label><div class="prog-bar"><div class="prog-fill" style="--w:12%"></div></div><span class="prog-pct">12%</span></div>
-        <div class="prog-item"><label>Static UI modules (8)</label><div class="prog-bar"><div class="prog-fill" style="--w:25%"></div></div><span class="prog-pct">25%</span></div>
+        <div class="prog-item"><label>Version 2.0 modules</label><div class="prog-bar"><div class="prog-fill" style="--w:25%"></div></div><span class="prog-pct">25%</span></div>
         <div class="prog-item"><label>iOS (TestFlight beta)</label><div class="prog-bar"><div class="prog-fill" style="--w:65%"></div></div><span class="prog-pct">65%</span></div>
         <div class="prog-item"><label>Analytics dashboard</label><div class="prog-bar"><div class="prog-fill" style="--w:8%"></div></div><span class="prog-pct">8%</span></div>
       </div>
-      <p class="speaker-note" style="margin-top: 14px;">Phase 1 (now): 29 live modules. Phase 2: wire 8 static UI screens, Online Meet rollout, then SSO central hub.</p>
+      <p class="speaker-note" style="margin-top: 14px;">Phase 1 delivered on Android v1.0.0. Version 2.0 covers SSO, Online Meet, and remaining roadmap modules.</p>
     </div>
   </section>
 
-  <!-- SLIDE 11: TECH & SECURITY -->
-  <section class="slide slide-single" data-slide="11" data-note="Split clearly: what we use TODAY vs FUTURE. Today: JWT, refresh token, device ID, secure mail storage, location guard, Firestore version gate. Future: SSO, RBAC, cert pinning, MFA, audit logs.">
+  <!-- SLIDE 15: TECH & SECURITY -->
+  <section class="slide slide-single" data-slide="15" data-note="Split clearly: what we use TODAY vs FUTURE. Today: JWT, refresh token, device ID, secure mail storage, location guard, Firestore version gate. Future: SSO, RBAC, cert pinning, MFA, audit logs.">
     <div>
       <div class="top-bar">
         <div class="brand-mark"><img src="assets/betopia_logo.png" alt="" /> Betopian</div>
-        <div class="slide-no">11 / 14</div>
+        <div class="slide-no">15 / 16</div>
       </div>
       <h2>Technology, Security &amp; Governance</h2>
       <p class="subtitle" style="margin-top: 6px;">What protects the platform today, and what we will add in the SSO phase.</p>
@@ -1789,138 +2107,32 @@
     </div>
   </section>
 
-  <!-- SLIDE 12: SSO VISION -->
-  <section class="slide slide-split" data-slide="12" data-note="Vision slide. One SSO login controls Email, Social, AI, ERP, Betopia Daily, GitLab. Click hub nodes live. Today separate logins. Tomorrow Betopia Identity Hub.">
-    <div class="reveal">
-      <div class="top-bar">
-        <div class="brand-mark"><img src="assets/betopia_logo.png" alt="" /> Betopian</div>
-        <div class="slide-no">12 / 14</div>
+  <!-- SLIDE 16: THANK YOU -->
+  <section class="slide slide-title" data-slide="16" data-note="Close warmly. Thank Management Committee. Open for questions. Point to QR for demo / TestFlight.">
+    <div class="content reveal" style="justify-content:center; align-items:center; text-align:center; flex:1;">
+      <div class="brand-mark" style="justify-content:center;">
+        <img src="assets/betopia_logo.png" alt="" style="filter:brightness(1.2)" /> Betopian
       </div>
-      <h2>Next: Betopia Identity Hub (SSO)</h2>
-      <p class="subtitle" style="margin-top: 8px;">Vision for one central login. SSO, GitLab, and Admin Console screens exist today as static UI only.</p>
-      <ul class="points" style="margin-top: 16px;">
-        <li><strong>Single Sign-On</strong>: one @betopialimited.com identity for app, mail, feed, AI, ERP</li>
-        <li><strong>Central Admin Console</strong>: IT/HR manages access, roles, and service toggles from one dashboard</li>
-        <li><strong>Unified session</strong>: no separate mail password; token propagated across all modules</li>
-        <li><strong>GitLab integration</strong>: dev teams see pipelines, MRs, releases inside Betopian</li>
-        <li><strong>Service registry</strong>: Email, Social Media API, Betopia AI, ERP, and Betopia Daily, all registered and monitored</li>
-      </ul>
-      <div class="hub-detail" id="hub-detail">Click a service node on the right to see how SSO connects it.</div>
-    </div>
-    <div class="hub-wrap reveal">
-      <div class="hub-center">Betopia<br/>Identity<br/>Hub</div>
-      <div class="hub-node n1 active" data-hub="erp"><strong>ERP</strong>Odoo / Business Brain</div>
-      <div class="hub-node n2" data-hub="mail"><strong>Email</strong>mail.betopialimited.com</div>
-      <div class="hub-node n3" data-hub="social"><strong>Social Media</strong>Feed &amp; Reels API</div>
-      <div class="hub-node n4" data-hub="ai"><strong>Betopia AI</strong>Chatbot + Policy Talk</div>
-      <div class="hub-node n5" data-hub="daily"><strong>Betopia Daily</strong>Stories &amp; Culture</div>
-      <div class="hub-node n6" data-hub="gitlab"><strong>GitLab</strong>CI/CD &amp; DevOps</div>
-      <div class="hub-node n7" data-hub="admin"><strong>Admin Console</strong>Central Control</div>
-    </div>
-  </section>
-
-  <!-- SLIDE 13: BUSINESS VALUE -->
-  <section class="slide slide-single" data-slide="13" data-note="Lead with delivered value only. Top row: platform facts. Cards: business impact. Bottom row: 7 HR flows, 4 help channels, 5000 associates, 10+ tools consolidated. Adoption KPIs start after wider rollout.">
-    <div>
-      <div class="top-bar">
-        <div class="brand-mark"><img src="assets/betopia_logo.png" alt="" /> Betopian</div>
-        <div class="slide-no">13 / 14</div>
-      </div>
-      <h2>Business Value &amp; Success Metrics</h2>
-      <p class="subtitle" style="margin-top: 6px;">Why Betopian matters to Betopia Group. Measurable impact for ~5,000 associates.</p>
-    </div>
-    <div class="reveal">
-      <div class="value-highlight">
-        <div class="metric"><div class="val">1</div><div class="lbl">App replaces 10+ tools</div><div class="value-target">Single entry point</div></div>
-        <div class="metric"><div class="val">29</div><div class="lbl">Live modules in app</div><div class="value-target">Self-service ready</div></div>
-        <div class="metric"><div class="val">74%</div><div class="lbl">Platform delivered</div><div class="value-target">v1.0.0 + iOS beta</div></div>
-        <div class="metric"><div class="val">2</div><div class="lbl">Platforms today</div><div class="value-target">Android + TestFlight</div></div>
-      </div>
-      <div class="card-grid">
-        <div class="card"><strong>HR cost reduction</strong><span>Punch, leave, payslip, movement, requisition, and cash advance on mobile. Fewer manual HR desk requests.</span></div>
-        <div class="card"><strong>Time saved per associate</strong><span>No ERP web login, no separate portals. Average HR action drops from minutes to seconds.</span></div>
-        <div class="card"><strong>Data sovereignty</strong><span>Internal feed and mail on company infrastructure. Culture content stays inside Betopia, not public social media.</span></div>
-        <div class="card"><strong>Support deflection</strong><span>Chatbot, Policy Talk (RAG), FAQ, and SOS reduce repeat HR/IT calls.</span></div>
-        <div class="card"><strong>Compliance &amp; audit</strong><span>GPS-verified attendance, device-bound login, version-controlled rollout, encrypted mail credentials.</span></div>
-        <div class="card"><strong>Employer brand</strong><span>Virtual NFC card, birthdays, announcements, Betopia Daily. Modern digital workplace image.</span></div>
-        <div class="card"><strong>Leadership visibility</strong><span>ERP notifications, feed engagement, and future Team Pulse give real-time culture signals.</span></div>
-        <div class="card"><strong>IT consolidation</strong><span>One Flutter codebase, dual API backend, Firestore remote config. Lower long-term maintenance cost.</span></div>
-      </div>
-      <div class="metric-row" style="margin-top: 14px;">
-        <div class="metric"><div class="val">7</div><div class="lbl">HR self-service workflows live</div><div class="value-target">Punch, leave, pay, movement, requisition, cash advance, benefits</div></div>
-        <div class="metric"><div class="val">4</div><div class="lbl">Help &amp; AI channels active</div><div class="value-target">Chatbot, Policy Talk, FAQ, SOS</div></div>
-        <div class="metric"><div class="val">5,000</div><div class="lbl">Associates on one platform</div><div class="value-target">Android live · iOS TestFlight beta</div></div>
-        <div class="metric"><div class="val">10+</div><div class="lbl">Tools replaced by one app</div><div class="value-target">ERP, mail, feed, HRIS, AI, and more</div></div>
-      </div>
-      <p class="speaker-note" style="margin-top: 10px;">Adoption % (MAU, feed engagement, HR desk hours saved) will be measured after company-wide rollout. Today the value is structural: one governed app, 29 live modules, dual platform.</p>
-    </div>
-  </section>
-
-  <!-- SLIDE 14: ROADMAP + CLOSE -->
-  <section class="slide slide-title" data-slide="14" data-note="Close with roadmap quarters + clear ASK. Approve SSO budget, wider rollout, leadership adoption. Thank you: open for questions.">
-    <div class="content reveal" style="justify-content:flex-start;">
-      <div class="brand-mark"><img src="assets/betopia_logo.png" alt="" style="filter:brightness(1.2)" /> Betopian</div>
-      <h2 style="-webkit-text-fill-color: #fff; background: none; color: #fff; font-size: 2rem; margin-top: 12px;">Roadmap 2026 &amp; Ask</h2>
-      <div class="roadmap">
-        <div class="road-phase">
-          <h4>Q2 2026 · Now</h4>
-          <ul>
-            <li>Android v1.0.0 rollout</li>
-            <li>iOS TestFlight beta (live)</li>
-            <li>Feed &amp; mail adoption drive</li>
-            <li>Static UI backend wiring (8 modules)</li>
-          </ul>
-        </div>
-        <div class="road-phase q2">
-          <h4>Q3 2026 · SSO Phase</h4>
-          <ul>
-            <li>Betopia Identity Hub (SSO)</li>
-            <li>Central Admin Console</li>
-            <li>Unified mail auth (no 2nd login)</li>
-            <li>GitLab dev portal module</li>
-          </ul>
-        </div>
-        <div class="road-phase q3">
-          <h4>Q4 2026 · Scale</h4>
-          <ul>
-            <li>iOS App Store release</li>
-            <li>Analytics &amp; MAU dashboard</li>
-            <li>Push notification orchestration</li>
-            <li>LMS / learning modules</li>
-          </ul>
-        </div>
-        <div class="road-phase q4">
-          <h4>2027 · Expand</h4>
-          <ul>
-            <li>Expense claims &amp; DMS</li>
-            <li>Multi-subsidiary support</li>
-            <li>Biometric attendance hardware</li>
-            <li>Audit &amp; compliance reporting</li>
-          </ul>
-        </div>
-      </div>
-      <div class="close-completion">
+      <p class="thank-you" style="margin-top:28px; font-size:2.6rem;">Thank You</p>
+      <p class="subtitle" style="margin-top:18px; max-width:540px; font-size:1.05rem; line-height:1.6;">
+        One secure app for every Betopia associate — HR, engagement, communication, and intelligence together.
+      </p>
+      <div class="close-completion" style="margin-top:28px; max-width:480px;">
         <div class="pct">74%</div>
         <div class="detail">
-          <strong>Platform completion (v1.0.0)</strong><br />
-          29 modules live · 8 static UI · iOS TestFlight beta available<br />
-          Android production + iPhone beta = dual-platform delivery today<br />
+          <strong>Android v1.0.0 · iOS TestFlight beta</strong><br />
+          35 modules delivered · ~5,000 associates<br />
           <a class="testflight-link" href="https://testflight.apple.com/join/18DM2hP4" target="_blank" rel="noopener">testflight.apple.com/join/18DM2hP4</a>
         </div>
       </div>
-      <ul class="points ask-list" style="margin-top: 14px;">
-        <li><strong>Approve Phase 2 budget</strong>: SSO hub + admin console + GitLab integration</li>
-        <li><strong>Endorse leadership adoption</strong>: feed posts &amp; mail usage set the tone</li>
-        <li><strong>Align KPIs now</strong>: baseline MAU, HR self-service %, feed engagement</li>
-      </ul>
-      <p class="thank-you" style="margin-top:16px; font-size:1.6rem;">Thank you.</p>
-      <p style="color: var(--text-dim); font-size: 0.9rem; margin-top: 4px; line-height: 1.6;">
-        Mehedi Hasan Shuvo<br />
+      <p style="color: var(--text-dim); font-size: 0.95rem; margin-top: 28px; line-height: 1.75;">
+        <strong style="color:#fff; font-size:1.05rem;">Mehedi Hasan Shuvo</strong><br />
         <span style="color:#FFD4B0; font-weight:600;">Software Engineer</span><br />
+        Betopia Group · 6 June 2026<br />
         01303129515 · Questions welcome
       </p>
     </div>
-    <div style="display:flex; gap:20px; align-items:flex-end; justify-content:flex-end;">
+    <div style="display:flex; gap:20px; align-items:flex-end; justify-content:flex-end; padding:24px;">
       <img src="assets/qr.png" alt="QR Demo" class="qr-closing" />
     </div>
   </section>
@@ -1935,14 +2147,16 @@
   <div class="overview-item" data-go="3"><span>04 Platform</span></div>
   <div class="overview-item" data-go="4"><span>05 Modules</span></div>
   <div class="overview-item" data-go="5"><span>06 HR</span></div>
-  <div class="overview-item" data-go="6"><span>07 Social</span></div>
-  <div class="overview-item" data-go="7"><span>08 Wellbeing</span></div>
-  <div class="overview-item" data-go="8"><span>09 Comms</span></div>
-  <div class="overview-item" data-go="9"><span>10 Status</span></div>
-  <div class="overview-item" data-go="10"><span>11 Tech</span></div>
-  <div class="overview-item" data-go="11"><span>12 SSO Hub</span></div>
-  <div class="overview-item" data-go="12"><span>13 Value</span></div>
-  <div class="overview-item" data-go="13"><span>14 Roadmap</span></div>
+  <div class="overview-item" data-go="6"><span>07 Cash Adv</span></div>
+  <div class="overview-item" data-go="7"><span>08 Social</span></div>
+  <div class="overview-item" data-go="8"><span>09 Wellbeing</span></div>
+  <div class="overview-item" data-go="9"><span>10 Finance</span></div>
+  <div class="overview-item" data-go="10"><span>11 Culture</span></div>
+  <div class="overview-item" data-go="11"><span>12 Comms</span></div>
+  <div class="overview-item" data-go="12"><span>13 SSO Hub</span></div>
+  <div class="overview-item" data-go="13"><span>14 Status</span></div>
+  <div class="overview-item" data-go="14"><span>15 Tech</span></div>
+  <div class="overview-item" data-go="15"><span>16 Thank You</span></div>
 </div>
 
 <div class="progress-track"><div class="progress-fill" id="progress" style="width:7%"></div></div>
@@ -2072,6 +2286,15 @@
       document.querySelectorAll('#platform-tabs .tab-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       setTab(btn.dataset.tab);
+    };
+  });
+
+  document.querySelectorAll('#module-tabs .tab-btn').forEach(btn => {
+    btn.onclick = () => {
+      document.querySelectorAll('#module-tabs .tab-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      document.querySelectorAll('.module-tab-panel').forEach(p => p.classList.remove('show'));
+      document.getElementById('module-panel-' + btn.dataset.modtab)?.classList.add('show');
     };
   });
 
